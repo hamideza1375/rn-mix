@@ -1,0 +1,20 @@
+import React from 'react'
+import { View } from 'react-native';
+import Form from '../../Components/Form';
+import Title from '../../utils/setTitle';
+
+const EditChildFood = (p) => {
+  Title()
+  p._admin.getEdit()
+  p._admin.unmountEditFood()
+  const editeChildFood = () => p._admin.editeFoodAction()
+
+  return (
+    <View>
+      <Form t pr i im edit
+        {...p}
+        onPress={() => editeChildFood()} />
+    </View>
+  )
+}
+export default EditChildFood
