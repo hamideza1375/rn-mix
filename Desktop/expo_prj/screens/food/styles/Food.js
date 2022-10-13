@@ -175,6 +175,7 @@ viewHead :{
   flex: 1,
   maxHeight:'100vh',
   flexDirection: 'row',
+  backgroundColor:'#fa0c'
 }
 
 ,
@@ -260,7 +261,7 @@ viewKey :{
   width:140,
   maxWidth: 'calc(100% - 20px)',
   height: 180,
-  backgroundColor: '#e9e9e9',
+  backgroundColor: 'orange',
   borderRadius: 7,
   boxShadow: '1px 1px 5px #4449',
   flexGrow: 1,
@@ -376,11 +377,10 @@ imageLogo :{
 ,
 containerFood :{
   width:'100%',
-  flexGrow: 1,
+  // flexGrow: 1,
   flexDirection: 'row',
   justifyContent: 'space-evenly',
-  alignItems:'center',
-  alignContent: 'center',
+  alignItems:'space-around',
   flexWrap: 'wrap',
 }
 ,
@@ -504,8 +504,10 @@ cardComment :{
 }
 ,
 imgCardComment :{
-  borderRadius: 30,
-  height: 65,
+  top:-5,
+  width: 60,
+  height: 60,
+  alignSelf: 'center',
 }
 ,
 info :{
@@ -581,17 +583,9 @@ export default styles
 // سایت برای خروجی گرفتن رایگان ios
 // کار با همه متد هارو یادداشت کن
 // تشریحی
-
 //!webrtc chat {
 // create like for chat
 // از voice to text تو webrtc
 // phone or email }
 
-// expo web in mobile
-// debug
-
-// comment pagination
-
-// یاد دادن appleId
-// notification width web-wiew
-// appleId
+// change admin 

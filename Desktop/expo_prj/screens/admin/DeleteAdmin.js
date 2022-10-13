@@ -1,24 +1,28 @@
 import React from 'react';
 import Form from '../../Components/Form'
-import { ScrollView, Text, TextInput, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 
 export default function DeleteAdmin (p) {
   const sendDeleteAdmin = () => p._admin.deleteAdmin()
   p._admin.getAlluserAdmin()
 
   return (
+      <View style={{height:'calc(100vh - 70px)'}} >
+      <View style={{height:200}} >
+      <Form overflow='hidden' ph {...p} onPress={() => sendDeleteAdmin()} />
+      </View>
     <ScrollView>
-      <Form ph {...p} onPress={() => sendDeleteAdmin()} />
        { p.admin.length ?
         <View style={{alignItems:'center',justifyContent:'center',alignSelf:'center',marginTop:15, width:220, height:80,backgroundColor:'silver'}} >
           {p.admin.map((adm,i)=>(
             <View key={i} >
             <Text style={{marginVertical:5 }}>name: {adm.fullname}</Text>
-            <View flexDirection={'row-reverse'} ><Text style={{marginVertical:5 }}>phone:</Text><TextInput caretHidden={true} showSoftInputOnFocus={false}  >{adm.phone}</TextInput></View>
+            <View style={{flexDirection:'row-reverse'}} ><Text style={{marginVertical:5 }}>phone:</Text><Text style={{marginVertical:5 }}  >{adm.phone}</Text></View>
             </View>
           ))}
         </View>:
         <></>}
     </ScrollView>
+    </View>
   )
 }

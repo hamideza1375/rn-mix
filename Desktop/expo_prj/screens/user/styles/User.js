@@ -157,7 +157,6 @@ btnPanel :{
   height: 50,
   width: '100%',
   marginTop: 'auto',
-  paddingBottom: 10,
   backgroundColor: '#555',
   boxShadow: '2px -2.5px 9px #555e',
   borderWidth:0,

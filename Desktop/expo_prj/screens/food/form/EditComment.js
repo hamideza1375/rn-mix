@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 import Form from '../../../Components/Form';
-import { useNavigation } from '@react-navigation/native';
 
-export const EditComment = ({ id3, props: p }) => {
-  const { showForm } = p
-  p._food.getEditComment(id3);
-  const navigation = useNavigation();
-  useEffect(() => navigation.setOptions({ headerRight: () => <></> }), [showForm, id3]);
-  return <Form bgcolor='#fff' m s {...p} onPress={() => p._food.editComment(id3)} />
+export const EditComment = (p) => {
+  p._food.getEditComment(p.id3);
+  p._food.unmountComment();
+  useEffect(() => p.navigation.setOptions({ headerRight: () => <></> }), [p.showForm, p.id3]);
+  return <Form mAutoFocus bgcolor='#fff' m s c {...p} onPress={() => p._food.editComment(p.id3)} />
 };

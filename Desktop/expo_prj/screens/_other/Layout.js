@@ -42,14 +42,14 @@ export const Layout = (p) => {
           p.route.name === 'Profile' &&(
           p.tokenValue.fullname ?
           <Drawer name={'Profile'} group={drawer} bgcolor="#9f9fff" style={{overflow:'hidden'}}>
-            <BottomTab name={'Profile'} group={bottom} bgcolor="#7980ee" color='white' activeColor='#05f' style={{overflow:'hidden',boxShadow:'1px -2px 8px #1188', borderTopWidth:1, borderColor:'red'}} >
+            <BottomTab name={'Profile'} group={bottom} bgcolor="#9f9fff" color='white' activeColor='#05f' style={{overflow:'hidden',boxShadow:'1px -2px 8px #1188', borderTopWidth:1, borderColor:'red'}} >
               {p.children}
             </BottomTab>
           </Drawer>:<View onLayout={()=>p.navigation.navigate('Login')} ></View>)
           ||
           p.route.name === 'FinallFoodPayment' &&
-          <Drawer name={'FinallFoodPayment'} group={drawer} >
-            <BottomTab name={'FinallFoodPayment'} group={bottom} >
+          <Drawer name={'FinallFoodPayment'} group={drawer} bgcolor='orange' >
+            <BottomTab name={'FinallFoodPayment'} group={bottom} bgcolor='orange' >
               {p.children}
             </BottomTab>
           </Drawer>

@@ -4,7 +4,7 @@ import styles from "../food/styles/Food.js"
 import {Input} from '../../Components/Html'
 import {Button} from '../../Components/Html'
 
-const Sms = (p) => {
+const ForgetPass = (p) => {
   p._user.setreplaceInput()
   const handlePhone = () => p._user.smsAction()
   const handleCode = () => p._user.codeAction()
@@ -33,4 +33,4 @@ const Sms = (p) => {
     </View>
   )
 }
-export default Sms
+export default ForgetPass

@@ -3,9 +3,9 @@ import { View, Text, TextInput, ScrollView, TouchableOpacity, Platform, FlatList
 import Icon from 'react-native-vector-icons/FontAwesome';
 import spacePrice from '../utils/spacePrice';
 
-let fontFamilyH = 'PTSerif-Bold'
+let fontFamilyH = 'serif_Bold'
 
-let fontFamily = Platform.OS === 'android' ? 'PTSerif-Regular' : 'PTSerif-Regular'
+let fontFamily = 'Serif_Regular'
 
 let fonts = Platform.OS === 'android' ? {} : { }
 
@@ -433,7 +433,7 @@ export const Small = React.forwardRef((props, ref) => {
 
 
 export const Input = React.forwardRef((props, ref) => {
-  const { alignSelf, fontSize = 16.5, p = 7, pt, pb, pl, pr, pv, ph, h = 50, w, m, mt, mb, ml, mr, mv, mh, color = '#444',
+  const {pColor='#777', alignSelf, fontSize = 16.5, p = 7, pt, pb, pl, pr, pv, ph, h = 50, w, m, mt, mb, ml, mr, mv, mh, color = '#444',
     bgcolor, border = [.3], flexGrow, flex } = props
   return (<View style={[{
     margin: m, marginTop: mt, marginBottom: mb, marginRight: mr, marginLeft: ml, marginHorizontal: mh, marginVertical: mv, color,
@@ -442,8 +442,8 @@ export const Input = React.forwardRef((props, ref) => {
     borderRadius: 5,
     backgroundColor: '#fff',
   }, props.style]} >
-    <TextInput ref={ref} onPress={props.onClick} autoCapitalize='none' autoCorrect={false} spellCheck={true} placeholder={props.p} {...props} style={[{ flex: 1, minWidth: '85%', width: '85%', left: 1, textAlign: "right", fontSize: 15, padding: 6, height: '100%', position: 'absolute', color: props.color ? props.color : '#222', }, props.className, props.textStyle]} />
-    {props.icon && <View onStartShouldSetResponder={props.iconPress} style={[{ width: '15%', textAlign: 'center', position: 'absolute', right: 1, borderLeftWidth: .3, height: '100%', justifyContent: 'center', alignItems: 'center' },props.textStyle]} ><Icon style={{}} name={props.icon} size={props.iconSize ? props.iconSize : 22} color={props.iconColor ? props.iconColor : "#666"} /></View>}
+    <TextInput placeholderTextColor={pColor} ref={ref} onPress={props.onClick} autoCapitalize='none' autoCorrect={false} spellCheck={true} placeholder={props.p} {...props} style={[{ flex: 1, minWidth: '85%', width: '85%', left: 1, textAlign: "right", fontSize: 15, padding: 8, height: '100%', position: 'absolute', color: props.color ? props.color : '#222', }, props.className, props.textStyle]} />
+    {props.icon && <View onStartShouldSetResponder={props.iconPress} style={[{ width: '15%', textAlign: 'center', position: 'absolute', right: 1, borderLeftWidth: border[0],borderColor:border[1], height: '100%', justifyContent: 'center', alignItems: 'center' },props.textStyle]} ><Icon style={{}} name={props.icon} size={props.iconSize ? props.iconSize : 22} color={props.iconColor ? props.iconColor : "#666"} /></View>}
   </View>)
 })
 
@@ -480,14 +480,14 @@ export const Tbtn = React.forwardRef((props, ref) => <View ref={ref} style={[{ f
 
 
 let odd = []
-export function Table({ object, setobject, h, fontSize = 15, body, header, color, btn1onClick, btn2onClick, btn3onClick, btn4onClick, btn5onClick, btn6onClick, btn7onClick, btn1, btn2, btn3, btn4, btn5, btn6, btn7
+export function Table({ mt=0,border=[],object, setobject, h, fontSize = 15, body, header, color, btn1onClick, btn2onClick, btn3onClick, btn4onClick, btn5onClick, btn6onClick, btn7onClick, btn1, btn2, btn3, btn4, btn5, btn6, btn7
   , btn1Opacity, btn2Opacity, btn3Opacity, btn4Opacity, btn5Opacity, btn6Opacity, btn7Opacity
 }) {
   for (let i = 0; i <= 100; i++) {
     if (i % 2 == 0)
       odd.push(i)
   }
-  let bgColor = (key) => ([{ backgroundColor: odd.includes(key) ? color[0] : color[1] }])
+  let bgColor = (key) => ([{ backgroundColor: odd.includes(key) ? color[0] : color[1],borderColor:border[1]?border[1]:color[1] }])
   let textStyle = { color: color[2], textShadowColor: color[2] }
 
 
@@ -518,9 +518,9 @@ export function Table({ object, setobject, h, fontSize = 15, body, header, color
       </View>
     )
 
-
+else
   return (
-    <View style={{width:'100%',maxHeight:'100%'}} >
+    <View style={{width:'100%',maxHeight:'100%',marginTop:mt}} >
       <RowSpan flexDirection='row-reverse' >
         {header.map((f, i) => (<Th style={[bgColor(1)]} textStyle={[textStyle,{fontSize}]} key={i}>{f}</Th>))}
       </RowSpan>

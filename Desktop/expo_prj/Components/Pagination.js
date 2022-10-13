@@ -12,7 +12,7 @@ const range = (from, to) => {
 function Pagination(props) {
   const { currentPage, setcurrent, setcurrentPage, pageLimit, pageNeighbours = 1, page, setpage, food, ass } = props;
 
-
+if(food?.length){
   const fetchPageNumbers = () => {
     const totalPages = Math.ceil(food.length / pageLimit);
     if (totalPages > ((pageNeighbours * 2) + 3) + 2) {
@@ -82,7 +82,7 @@ function Pagination(props) {
       })}
     </View>
   );
-
+}
 
 }
 

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Text, View, FlatList } from 'react-native';
 import { Button, Input } from '../../Components/Html';
-import spacePrice from '../../utils/spacePrice';
 
 const Address = (p) => {
   p._admin.getAllAddress()
@@ -9,7 +8,7 @@ const Address = (p) => {
 
   return (
     <View style={{ flex: 1, width: '100%', backgroundColor: '#eee' }} >
-      <Input w={'95%'} alignSelf={'center'} value={p.textSearch} onChangeText={(text) => { p.settextSearch(text); const fd = p._address.filter(f => f.fullname.includes(text)); p.setallAddress(fd) }} p="جستجو غذا و نوشیدنی" icon={'search'} />
+      <Input border={[1,'#888']} w={'90%'} mt={10} alignSelf={'center'} value={p.textSearch} onChangeText={(text) => { p.settextSearch(text); const fd = p._address.filter(f => f.fullname.includes(text)); p.setallAddress(fd) }} p="جستجو" icon={'search'} />
       {
         p.allAddress?.length ?
           <FlatList
@@ -22,31 +21,33 @@ const Address = (p) => {
               <View key={item._id} style={{
                 alignSelf: 'center',
                 borderWidth: .3,
+                borderColor:'#888',
                 width: '90%',
                 marginVertical: 15,
                 padding: 15,
                 backgroundColor: '#f5f5f5',
                 borderRadius: 4
               }}>
-                <View style={{ borderBottomWidth: .2, paddingBottom: 20, width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15 }} >
+                <View style={{ borderBottomWidth: .2,borderColor:'#888', paddingBottom: 20, width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15 }} >
                   <Text style={{ textDecorationLine: p.addressMap.get(item._id) ? 'line-through' : 'none', textDecorationStyle: 'solid', color: p.addressMap.get(item._id) ? '#aaa' : 'black' }}><Text style={[{
                     fontWeight: 'bold',
                     textAlign: 'left',
                   }]} >نام: </Text>{item.fullname}</Text>
-                  <View flexDirection={'row'} ><Text style={{ fontWeight: 'bold', textAlign: 'left', textDecorationLine: p.addressMap.get(item._id) ? 'line-through' : 'none', textDecorationStyle: 'solid', color: p.addressMap.get(item._id) ? '#aaa' : 'black', }} >شماره تلفن: </Text>
-                  </View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ textDecorationLine: p.addressMap.get(item._id) ? 'line-through' : 'none', textDecorationStyle: 'solid', color: p.addressMap.get(item._id) ? '#aaa' : 'black', fontWeight: 'bold', textAlign: 'left' }} >شماره تلفن: </Text><Text style={{textDecorationLine: p.addressMap.get(item._id) ? 'line-through' : 'none', textDecorationStyle: 'solid', color: p.addressMap.get(item._id) ? '#aaa' : 'black'}} >{item.phone}</Text></View>
                 </View>
-                <View style={{ borderBottomWidth: .2, padding: 15, width: '100%' }} >
-                  <Text  ><Text style={{ fontWeight: 'bold', textAlign: 'left' }} >آدرس: </Text>{item.formattedAddress?.split(",")[0] + item.formattedAddress?.split(",")[1]} , {item.streetName}</Text>
+                <View style={{ borderBottomWidth: .2,borderColor:'#888', padding: 15, width: '100%' }} >
+                  <Text style={{textDecorationLine: p.addressMap.get(item._id) ? 'line-through' : 'none', textDecorationStyle: 'solid', color: p.addressMap.get(item._id) ? '#aaa' : 'black'}}  ><Text style={{ textDecorationLine: p.addressMap.get(item._id) ? 'line-through' : 'none', textDecorationStyle: 'solid', color: p.addressMap.get(item._id) ? '#aaa' : 'black', fontWeight: 'bold', textAlign: 'left' }} >آدرس: </Text >{item.formattedAddress?.split(",")[0] + item.formattedAddress?.split(",")[1]} , {item.streetName}</Text>
                 </View>
-                <View style={{ borderBottomWidth: .2, paddingVertical: 15, width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, }} >
+                <View style={{ borderBottomWidth: .2,borderColor:'#888', paddingVertical: 15, width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, }} >
                   <Text style={{ textDecorationLine: p.addressMap.get(item._id) ? 'line-through' : 'none', textDecorationStyle: 'solid', color: p.addressMap.get(item._id) ? '#aaa' : 'black' }} ><Text style={{ fontWeight: 'bold' }} >پلاک: </Text>{item.floor}</Text>
                   <Text style={{ textDecorationLine: p.addressMap.get(item._id) ? 'line-through' : 'none', textDecorationStyle: 'solid', color: p.addressMap.get(item._id) ? '#aaa' : 'black' }} ><Text style={{ fontWeight: 'bold' }} >طبقه: </Text>{item.plaque}</Text>
                   <Text style={{ textDecorationLine: p.addressMap.get(item._id) ? 'line-through' : 'none', textDecorationStyle: 'solid', color: p.addressMap.get(item._id) ? '#aaa' : 'black' }} ><Text style={{ fontWeight: 'bold' }} >شماره: </Text>{item.id}</Text>
                 </View>
-                <View style={{ borderBottomWidth: .2, paddingVertical: 15, width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, }} >
-                  <Text style={{ textDecorationLine: p.addressMap.get(item._id) ? 'line-through' : 'none', textDecorationStyle: 'solid', color: p.addressMap.get(item._id) ? '#aaa' : 'black' }} ><Text style={{ fontWeight: 'bold' }} >قیمت: </Text>{spacePrice(item.price)}</Text>
-                  <Text style={{ color: '#ababab', }}>{item.createdAt.split("T")[1].split(".")[0]}</Text>
+                <View style={{ borderBottomWidth: .2,borderColor:'#888', paddingVertical: 15, width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, }} >
+                  <Text style={{ textDecorationLine: p.addressMap.get(item._id) ? 'line-through' : 'none', textDecorationStyle: 'solid', color: p.addressMap.get(item._id) ? '#aaa' : 'black' }} ><Text style={{ fontWeight: 'bold' }} >قیمت: </Text>{p.spacePrice(item.price)} تومان</Text>
+                  <Text style={{ color: '#ababab', }}>{p.moment(item.createdAt).format('hh:mm')}</Text>
+                  {/* <Text style={{ color: '#ababab', }}>{item.createdAt.split("T")[1].split(".")[0]}</Text> */}
                 </View>
                 <View style={{ paddingTop: 15, width: '100%', flexDirection: 'row', justifyContent: 'space-around', }} >
                   <Button outline bgcolor='blue' style={{ backgroundColor: '#f7f7f7', height: 30 }}

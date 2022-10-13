@@ -1,17 +1,9 @@
-import { useCallback, useEffect, useMemo } from 'react'
-import { BackHandler, ToastAndroid, Platform, Dimensions } from 'react-native'
-import { useFocusEffect } from '@react-navigation/native'
-import { getSingleTitleFoods,editcomment, deletecomment, getallchildfood, getfoods, getcommentchildfood, createcommentchildfood, getsinglechildfood, getcommentsinglefood, payment, getProfile, notification } from '../services/foodService'
-import localStorage from '@react-native-async-storage/async-storage'
-import Alert from "../utils/alert"
-import { create } from '../utils/notification'
-import jwt_decode from "jwt-decode";
-
+import Axios from 'axios';
 
 export function foodState(p) {
 
   this.setorientation = () => {
-    Dimensions.addEventListener('change', ({ window: { width, height } }) => {
+    p.Dimensions.addEventListener('change', ({ window: { width, height } }) => {
       width < height ? p.setorientation("PORTRAIT") : p.setorientation("LANDSCAPE")
       p.setwidth(width); p.setheight(height)
     })
@@ -19,103 +11,88 @@ export function foodState(p) {
 
 
 
-    // EditFood
-    this.getSingleTitleFoods = async () => {
-      useEffect(() => {
-        (async () => {
-          const { data } = await getSingleTitleFoods(p.route.params.id)
-          p.settitle(data.title)
-        })()
-        return () => {
-          p.settitle('')
-        }
-      }, [])
-    }
-  
+  // EditFood
+  this.getSingleTitleFoods = async () => {
+    p.useEffect(() => {
+      (async () => {
+        const { data } = await p.getSingleTitleFoods(p.route.params.id)
+        p.settitle(data.title)
+      })()
+      return () => {
+        p.settitle('')
+      }
+    }, [])
+  }
 
-    this.setPagination = ()=>{
-      useFocusEffect(useCallback(() => {
-        p.setcurrentPage(1)
-        p.setpage(1);
-        p.setcurrent([])
-      }, []))
-    }
-    
+
+  this.setPagination = () => {
+    p.useFocusEffect(p.useCallback(() => {
+      p.setcurrentPage(1)
+      p.setpage(1);
+      p.setcurrent([])
+      p.settextSearch('')
+    }, []))
+  }
+
 
   this.getTitleFood = show => {
-    useFocusEffect(useCallback(() => {
-      setTimeout(() => {
-        (async () => {
-            let { data } = await getfoods()
-            if (data.length !== p.foods)
-              p.setfoods(data)
-        })()
-      }, 100);
+    p.useFocusEffect(p.useCallback(() => {
+      (async () => {
+        let { data } = await p.getfoods()
+        if (data.length !== p.foods)
+          p.setfoods(data)
+      })()
     }, [show]))
   }
 
 
 
-
-
   this.getChildFood = async () => {
-    useFocusEffect(useCallback(() => {
+    p.useFocusEffect(p.useCallback(() => {
       (async () => {
-          var d = []
-          let { data } = await getallchildfood()
-          let w = data.child.filter((ch) => ch.refId == p.route.params.id)
-          for (let k in w) {
-            let l = p.map.get(w[k]._id)
+        var d = []
+        let { data } = await p.getallchildfood()
+        let w = data.child.filter((ch) => ch.refId == p.route.params.id)
+        for (let k in w) {
+          let l = p.map.get(w[k]._id)
 
-            if (l !== undefined) {
-              let f = JSON.parse(l)
-              w[k].num = f.num
-              w[k].total = f.total
-              d.push(w[k])
-            } else {
-              d.push(w[k])
-            }
+          if (l !== undefined) {
+            let f = JSON.parse(l)
+            w[k].num = f.num
+            w[k].total = f.total
+            d.push(w[k])
+          } else {
+            d.push(w[k])
           }
-          p.foodMap.set(p.route.params.id, d)
-          p.setfood2(d)
+        }
+        p.foodMap.set(p.route.params.id, d)
+        p.setfood2(d)
+        p.setcurrentComment([])
       })()
-    }, []))
-
-    useFocusEffect(useCallback(() => {
-      return () => {
-        p.setfood2([])
-        p.settextSearch('')
-      }
-    }, []))
-
+      return () => p.foodMap.set(p.route.params.id, p.food2)
+    }, [p.changeChildfood]))
   }
-
-
-
-
-  this.getChildFood2 = async () => {
-    useFocusEffect(useCallback(() => {
-      (async () => {
-          let { data } = await getallchildfood()
-          let w = data.child.filter((ch) => ch.refId == p.route.params.id)
-          p.foodMap.set(p.route.params.id, w)
-          p.setfood2(w)
-          p.setcurrent(w.filter((f, i) => (i >= (p.page - 1 ) * p.pageLimit ) && (i < (p.page - 1) * p.pageLimit + p.pageLimit)))
-      })()
-    }, [p.changeFood]))
-  }
-
-
 
 
 
   this.sercher = (textSearch) => {
-    p.foodMap.set(p.route.params.id, p.food2.filter((f) => f.title.includes(textSearch)))
-    let fd = p.food2.filter(f => f.title.includes(textSearch))
-    if (fd) {
-      const currentPage = Math.max(0, Math.min(1, fd.length))
+    const f = []
+    let fd1 = p.food2.filter((f) => f.title.includes(textSearch))
+    f.push(...fd1)
+    let fd2 = p.food2.filter((f) => f.title.includes(textSearch[0]) || f.title.includes(textSearch[1]) || f.title.includes(textSearch[2]) || f.title.includes(textSearch[3]) || f.title.includes(textSearch[4]) || f.title.includes(textSearch[5]) || f.title.includes(textSearch[6]) || f.title.includes(textSearch[7] || f.title.includes(textSearch[8]) || f.title.includes(textSearch[9]) || f.title.includes(textSearch[10])))
+    for (let i in fd1) {
+      for (let n in fd2) {
+        if (fd1[i]._id !== fd2[n]._id) {
+          let find = f.find((f) => f._id === fd2[n]._id)
+          if (!find) { textSearch[1] && f.push(fd2[n]) }
+        }
+      }
+    }
+    p.foodMap.set(p.route.params.id, f)
+    if (f) {
+      const currentPage = Math.max(0, Math.min(1, f.length))
       const offset = (currentPage - 1) * p.pageLimit
-      const currentCountries = fd.slice(offset, offset + p.pageLimit)
+      const currentCountries = f.slice(offset, offset + p.pageLimit)
       p.setcurrent(currentCountries)
       p.setcurrentPage(currentPage)
       p.settextSearch('')
@@ -144,7 +121,7 @@ export function foodState(p) {
 
 
   this.allPrice = async () => {
-    useFocusEffect(useCallback(() => {
+    p.useFocusEffect(p.useCallback(() => {
       (async () => {
         let all = []
         for (let i of p.allfood) { all.push(i.total) }
@@ -270,30 +247,30 @@ export function foodState(p) {
 
 
   this.deleteStorage = async () => {
-      for (let i of p.foods) {
-        const { data } = await getallchildfood(i._id)
-        for (let item of data.child) {
-          p.map.delete(item._id)
-          p.map.delete(item._id + '1')
-        }
-        p.map.delete('sum')
-        p.map.delete('allprice')
-        p.setallprice(0)
-        p.setallfood([])
-        p.settotalTitle([])
-        p.setshow1(!p.show1)
+    for (let i of p.foods) {
+      const { data } = await p.getallchildfood(i._id)
+      for (let item of data.child) {
+        p.map.delete(item._id)
+        p.map.delete(item._id + '1')
       }
+      p.map.delete('sum')
+      p.map.delete('allprice')
+      p.setallprice(0)
+      p.setallfood([])
+      p.settotalTitle([])
+      p.setshow1(!p.show1)
+    }
   }
 
 
 
 
   this.getsinglefood = async () => {
-    useFocusEffect(useCallback(() => {
+    p.useFocusEffect(p.useCallback(() => {
       (async () => {
-          const { data } = await getsinglechildfood(p.route.params.id, p.route.params.id2)
-          p.setsinglefood(data.child)
-          p.setpermission(data.permission)
+        const { data } = await p.getsinglechildfood(p.route.params.id, p.route.params.id2)
+        p.setsinglefood(data.child)
+        p.setpermission(data.permission)
       })()
       return () => (
         p.setsinglefood({}),
@@ -307,10 +284,10 @@ export function foodState(p) {
 
 
   this.getImageProfile = () => {
-    useFocusEffect(
-      useCallback(() => {
+    p.useFocusEffect(
+      p.useCallback(() => {
         (async () => {
-          await getProfile().then(({ data }) => {
+          await p.getProfile().then(({ data }) => {
             data?.uri && p.setimageProfile(data.uri)
           })
         })()
@@ -319,24 +296,24 @@ export function foodState(p) {
   }
 
 
-  this.header =()=>{
-    useEffect(() => {
-      p.navigation.setOptions({headerShown:(p.showForm2 || p.showForm) ?false:true,headerStyle:{backgroundColor:Platform.OS === 'android'?'#fa5b':'#fa5'}})
+  this.header = () => {
+    p.useEffect(() => {
+      p.navigation.setOptions({ headerShown: (p.showForm2 || p.showForm) ? false : true, headerStyle: { backgroundColor: p.Platform.OS === 'android' ? '#fa5b' : '#fa5' } })
     }, [p.showForm2, p.showForm])
-  
+
   }
 
 
 
   this.getCommentSingle = async () => {
-    useFocusEffect(useCallback(() => {
+    p.useFocusEffect(p.useCallback(() => {
       (async () => {
-          const { data } = await getcommentchildfood(p.route.params.id, p.route.params.id2)
-          p.setallcomment(data.comment)
+        const { data } = await p.getcommentchildfood(p.route.params.id, p.route.params.id2)
+        p.setallcomment(data.comment)
       })()
     }, [p.showForm, p.showForm2, p.changeComment]))
 
-    useFocusEffect(useCallback(() => {
+    p.useFocusEffect(p.useCallback(() => {
       return () => {
         p.setshowForm(false)
         p.setshowForm2(false)
@@ -345,74 +322,99 @@ export function foodState(p) {
     }, []))
   }
 
-
-
-  this.sendComment = async () => {
-      await createcommentchildfood(p.route.params.id, p.route.params.id2, {
-        starId: p.tokenValue.userId,
-        fullname: p.tokenValue.fullname,
-        imageUrl: p.imageProfile,
-        message: p.message,
-        allstar: Number(p.allstar),
-        id: p.singlefood._id
-      })
-      p.setstar1(false),
-        p.setstar2(false),
-        p.setstar3(false),
-        p.setstar4(false),
-        p.setstar5(false),
-        p.setfullname(''),
-        p.setemail(''),
-        p.setmessage(''),
-        p.setshowForm2(false)
+  this.findCmment = async () => {
+    p.useFocusEffect(p.useCallback(() => {
+      p.allcomment.forEach(item => {
+        if (item.starId === p.tokenValue.userId) { p.setsendMessage(false) }
+      });
+    }, [p.allcomment]))
   }
 
 
 
+  this.sendComment = async () => {
+    await p.createcommentchildfood(p.route.params.id, p.route.params.id2, {
+      starId: p.tokenValue.userId,
+      fullname: p.tokenValue.fullname,
+      imageUrl: p.imageProfile,
+      message: p.message,
+      allstar: Number(p.allstar),
+      id: p.singlefood._id
+    })
+    p.setstar1(true),
+      p.setstar2(true),
+      p.setstar3(true),
+      p.setstar4(true),
+      p.setstar5(true),
+      p.setfullname(''),
+      p.setemail(''),
+      p.setmessage(''),
+      p.setshowForm2(false)
+  }
+
+
+  this.unmountComment = () => {
+    p.useFocusEffect(p.useCallback(() => {
+      return () => {
+        p.setstar1(true)
+        p.setstar2(true)
+        p.setstar3(true)
+        p.setstar4(true)
+        p.setstar5(true)
+        p.setmessage('')
+      }
+    }, []))
+  }
+
+
   this.editComment = async id3 => {
-      await editcomment(p.route.params.id, p.route.params.id2, id3, { message: p.message, allstar: p.allstar })
-      p.setstar1(false)
-      p.setstar2(false)
-      p.setstar3(false)
-      p.setstar4(false)
-      p.setstar5(false)
-      p.setemail('')
-      p.setmessage('')
-      p.setshowForm(false)
+    await p.editcomment(p.route.params.id, p.route.params.id2, id3, { message: p.message, allstar: p.allstar })
+    p.setstar1(true)
+    p.setstar2(true)
+    p.setstar3(true)
+    p.setstar4(true)
+    p.setstar5(true)
+    p.setemail('')
+    p.setmessage('')
+    p.setshowForm(false)
+    let currentComment = p.currentComment.find(c => c._id === id3)
+    currentComment.message = p.message,
+      currentComment.allstar = p.allstar
   }
 
 
 
   this.deleteComment = async id3 => {
-      Alert.alert(
-        "از حذف کامنت مطمئنید؟",
-        "",
-        [
-          { text: "Cancel", onPress: () => {} },
-          {
-            text: "OK", onPress: async () => {
-              await deletecomment(p.route.params.id, p.route.params.id2, id3,p.tokenValue.userId)
-              p.setchangeComment(!p.changeComment)
-            }
+    p.Alert.alert(
+      "از حذف کامنت مطمئنید؟",
+      "",
+      [
+        { text: "Cancel", onPress: () => { } },
+        {
+          text: "OK", onPress: async () => {
+            await p.deletecomment(p.route.params.id, p.route.params.id2, id3, p.tokenValue.userId)
+            p.setcurrentComment(comment => comment.filter((c) => c._id != id3))
+            p.setsendMessage(true)
           }
-        ]
-      );
+        }
+      ]
+    );
   }
 
 
 
   this.getEditComment = (id3) => {
-    useFocusEffect(useCallback(() => {
+    p.useFocusEffect(p.useCallback(() => {
       (async () => {
-          const { data } = await getcommentsinglefood(p.route.params.id, p.route.params.id2, id3)
-          p.setmessage(data.comment.message)
-          p.setallstar(data.comment.allstar)
-          if (data.comment.allstar == 1) p.setstar1(true)
-          if (data.comment.allstar == 2) p.setstar1(true), p.setstar2(true)
-          if (data.comment.allstar == 3) p.setstar1(true), p.setstar2(true), p.setstar3(true)
-          if (data.comment.allstar == 4) p.setstar1(true), p.setstar2(true), p.setstar3(true), p.setstar4(true)
-          if (data.comment.allstar == 5) p.setstar1(true), p.setstar2(true), p.setstar3(true), p.setstar4(true), p.setstar5(true)
-      })()
+        const { data } = await p.getcommentsinglefood(p.route.params.id, p.route.params.id2, id3)
+        p.setmessage(data.comment.message)
+        p.setallstar(data.comment.allstar)
+        if (data.comment.allstar == 1) p.setstar1(true)
+        if (data.comment.allstar == 2) p.setstar1(true), p.setstar2(true)
+        if (data.comment.allstar == 3) p.setstar1(true), p.setstar2(true), p.setstar3(true)
+        if (data.comment.allstar == 4) p.setstar1(true), p.setstar2(true), p.setstar3(true), p.setstar4(true)
+        if (data.comment.allstar == 5) p.setstar1(true), p.setstar2(true), p.setstar3(true), p.setstar4(true), p.setstar5(true)
+     })()
 
     }, []))
   }
@@ -421,7 +423,7 @@ export function foodState(p) {
 
   this.pressIconEdit = (id) => {
     p.setshowForm(true)
-    p.setid3(id)
+    p.setid3(id ? id : '')
     p.setstar1(false)
     p.setstar2(false)
     p.setstar3(false)
@@ -432,30 +434,30 @@ export function foodState(p) {
 
 
   this.backHandler = () => {
-      if (Platform.OS === 'android') {
-        useFocusEffect(useCallback(() => {
-          let current = 0
-          BackHandler.addEventListener("hardwareBackPress", () => {
-            if (p.route.name === 'Home' && p.navigation?.getState()?.index === 0) {
-              current += 1
-              if (current === 2) { BackHandler.exitApp(); return true }
-              ToastAndroid.show("برای خروج دوبار لمس کنید", ToastAndroid.SHORT)
-              setTimeout(() => {
-                current = 0
-              }, 1000);
-              return true
-            }
-          })
-          // return BackHandler.exitApp()
-        }, []))
-      }
-      else return null
-      return()=> Platform.OS === 'android' && BackHandler.removeEventListener('hardwareBackPress')
+    if (p.Platform.OS === 'android') {
+      p.useFocusEffect(p.useCallback(() => {
+        let current = 0
+        p.BackHandler.addEventListener("hardwareBackPress", () => {
+          if (p.route.name === 'Home' && p.navigation?.getState()?.index === 0) {
+            current += 1
+            if (current === 2) { p.BackHandler.exitApp(); return true }
+            p.ToastAndroid.show("برای خروج دوبار لمس کنید", p.ToastAndroid.SHORT)
+            setTimeout(() => {
+              current = 0
+            }, 1000);
+            return true
+          }
+        })
+        // return BackHandler.exitApp()
+      }, []))
+    }
+    else return null
+    return () => p.Platform.OS === 'android' && p.BackHandler.removeEventListener('hardwareBackPress')
   }
 
 
   this.payment = async () => {
-    const { data } = await payment(
+    const { data } = await p.payment(
       p.allprice,
       {
         foods: JSON.stringify(p.totalTitle),
@@ -471,54 +473,87 @@ export function foodState(p) {
     // await Linking.openURL(data)
   }
 
-
-
 }
 
 
 
 //home
 export const home = (p) => {
-  useMemo(() => {
+  p.useMemo(() => {
     (async () => {
-      let newNotification = await localStorage.getItem('notification')
-      const { data } = await notification()
+      let newNotification = await p.localStorage.getItem('notification')
+      const { data } = await p.notification()
       if (data)
         if (data.message && newNotification !== data.message) {
-          create(data.title, data.message, require('../assets/a1.png'))
-          await localStorage.setItem('notification', data.message)
+          p.create(data.title, data.message, require('../assets/a1.png'))
+          await p.localStorage.setItem('notification', data.message)
         }
     })();
 
     setInterval(async () => {
       (async () => {
-        let newNotification = await localStorage.getItem('notification')
-        const { data } = await notification()
+        let newNotification = await p.localStorage.getItem('notification')
+        const { data } = await p.notification()
         if (data)
           if (data.message && newNotification !== data.message) {
-            create(data.title, data.message, require('../assets/a1.png'))
-            await localStorage.setItem('notification', data.message)
+            p.create(data.title, data.message, require('../assets/a1.png'))
+            await p.localStorage.setItem('notification', data.message)
           }
       })();
     }, 15000);
   }, [p.width])
 
 
-  useMemo(() =>
-    setTimeout(() => {
+
+
+  p.useEffect(() => {
+    var toast500 = () => { p.toast.error('خطا', 'مشکلی از سمت سرور پیش آمده') }
+    var toast400 = () => { p.toast.error('خطا', 'اصلاح کنید و دوباره امتحان کنید') }
+    var toast399 = () => { p.toast.error('خطا', 'کد وارد شده اشتباه هست') }
+    var toast398 = () => { p.toast.error('خطا', 'شما قبلا ثبت نام کردید') }
+    var toast397 = () => { p.toast.error('خطا', 'شماره یا پسورد را اشتباه وارد کردید') }
+    Axios.interceptors.response.use(function (response) {
+      return response;
+    }, function (error) {
+      if (error?.response?.status) {
+        if (error.response.status > 400 && error.response.status <= 500) { toast500() };
+        if (error.response.status === 400) { toast400() };
+        if (error.response.status === 399) { toast399() };
+        if (error.response.status === 398) { toast398() };
+        if (error.response.status === 397) { toast397() };
+      } return Promise.reject(error);
+    });
+
+  }, [])
+
+
+
+  p.useMemo(() => {
+    location.pathname === '/Payment' ?
       p.setSplash(false)
-    }, 1000), [])
+      :
+      setTimeout(() => {
+        p.setSplash(false)
+      }, 1000)
+
+    p.Dimensions.addEventListener('change', ({ window: { width, height } }) => {
+      width < height ? p.setorientation("PORTRAIT") : p.setorientation("LANDSCAPE")
+      p.setwidth(width); p.setheight(height)
+    })
+
+  }, [])
 
 
-  useFocusEffect(useCallback(() => {
+  p.useFocusEffect(p.useCallback(() => {
     (async () => {
-        localStorage.getItem("token").then((token) => {
-          if (token) {
-          const user = jwt_decode(token)
+      p.localStorage.getItem("token").then((token) => {
+        if (token) {
+          const user = p.jwt_decode(token)
           p.settokenValue(user)
-        }})
-        let { data } = await getfoods()
-        p.setfoods(data)
+        }
+      })
+      let { data } = await p.getfoods()
+      p.setfoods(data)
     })()
   }, []))
 }

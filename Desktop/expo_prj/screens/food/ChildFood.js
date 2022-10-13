@@ -6,24 +6,21 @@ import styles from "./styles/Food.js"
 import { localhost } from '../../utils/axios/axios'
 import Pagination from '../../Components/Pagination';
 import Loading from '../../Components/Loading'
-import spacePrice from '../../utils/spacePrice';
-import { courseIdValidator } from '../../utils/IdValidator';
+
 let styleScroll = {}
 let numColumns
 let numColumns2
 let hidden
 let hidden2
 
+
+
 const ChildFood = (p) => {
   const [item2, setitem] = useState({})
   const [item3, setitem3] = useState({})
 
-  const anim = useRef(new Animated.Value(0)).current;
-  const animScale = useRef(new Animated.Value(1)).current;
-
-
   const startScale = () => {
-    Animated.timing(animScale, {
+    Animated.timing(p.animScale, {
       toValue: 0,
       duration: 700,
       useNativeDriver: false
@@ -31,23 +28,20 @@ const ChildFood = (p) => {
 
     setTimeout(() => {
       setitem({})
-      Animated.timing(animScale, {
+      Animated.timing(p.animScale, {
         toValue: 1,
         duration: 0,
         useNativeDriver: false
       }).start();
-    }, 800);
+    }, 900);
 
   };
 
 
 
 
-
-
-
   const open = () => {
-    Animated.timing(anim, {
+    Animated.timing(p.anim, {
       toValue: 80,
       duration: 150,
       useNativeDriver: false
@@ -55,7 +49,7 @@ const ChildFood = (p) => {
   };
 
   const close = () => {
-    Animated.timing(anim, {
+    Animated.timing(p.anim, {
       toValue: 0,
       duration: 150,
       useNativeDriver: false
@@ -77,7 +71,7 @@ const ChildFood = (p) => {
   if (p.width > 600 && p.width <= 900) { styleScroll = styles.containItemScroll; numColumns = 3;numColumns2 = 3 }
   if (p.width > 900) { styleScroll = styles.containItem2Scroll; numColumns = 4; numColumns2 = 4 }
 
-  if (!courseIdValidator(p.route.params.id)) return p.navigation.navigate('NotFound')
+  if (!p.courseIdValidator(p.route.params.id)) return p.navigation.navigate('NotFound')
 
   useEffect(() => {
     inputPrice == 0 && close()
@@ -93,12 +87,13 @@ const ChildFood = (p) => {
         <View style={styles.viewSearch}>
           <Icon name="search" size={20} color="#999" style={{ padding: 7, flex: 1 }} />
           <TextInput
+            placeholderTextColor={'#777'}
             autoCapitalize='none'
             autoCorrect={false}
             spellCheck={true}
             value={p.textSearch}
             onChangeText={(text) => searcher(text)}
-            placeholder="جستجو غذا و نوشیدنی" style={styles.search}
+            placeholder="جستجو" style={styles.search}
           />
         </View>
 
@@ -135,7 +130,7 @@ const ChildFood = (p) => {
                   ]}>
 
 
-                  <Pressable style={{ height: '55%' }} onPress={() => { p.navigation.navigate("SingleFood", { id: p.route.params.id, id2: item._id, page: p.page }) }} >
+                  <Pressable style={{ height: '55%' }} onPress={() => { p.navigation.navigate("SingleFood", { onGoBack:()=>alert(9),id: p.route.params.id, id2: item._id, page: p.page }) }} >
                     <ImageBackground style={[styles.img]} source={{ uri: `${localhost}/upload/food/${item.imageUrl}` }}>
                       <Text style={styles.textTitleChild}>{item.title}</Text>
                     </ImageBackground>
@@ -143,7 +138,7 @@ const ChildFood = (p) => {
                   <View style={styles.subImg} >
                     <View style={styles.ViewSubItem}>
                       <View style={{ paddingRight: 3, top: 2 }} >
-                        <Text style={[{ fontSize: 13.5, textAlign: 'left', fontSize: p.width < 360 ? 10.5 : 13 }]}>قیمت:{spacePrice(item.price)}</Text>
+                        <Text style={[{ fontSize: 13.5, textAlign: 'left', fontSize: p.width < 360 ? 10.5 : 13 }]}>قیمت:{p.spacePrice(item.price)}</Text>
                         <View style={{ top: 12, flexDirection: 'row', alignSelf: 'flex-end' }} >
                           {item.meanStar >= 5 && <Icon4 name='star' size={p.width < 360 ? 13 : 16} color='orange' />}
                           {item.meanStar > 4 && item.meanStar < 5 && <Icon4 name='star-half' size={p.width < 360 ? 13 : 16} color='orange' />}
@@ -164,12 +159,12 @@ const ChildFood = (p) => {
                               onResponderStart={(e) => {
 
 
-                                hidden = animScale.interpolate({
+                                hidden = p.animScale.interpolate({
                                   inputRange: [0, 1],
                                   outputRange: [450, e.nativeEvent.pageY - 177]
                                 })
 
-                                hidden2 = animScale.interpolate({
+                                hidden2 = p.animScale.interpolate({
                                   inputRange: [0, 1],
                                   outputRange: 
                                   numColumns2 == 1 && [180, e.nativeEvent.pageX - 100] ||
@@ -224,8 +219,7 @@ const ChildFood = (p) => {
               </>)} />
         }
       </View >
-      <Animated.View style={{ height: '7%', minHeight: 50, position: 'absolute', bottom: anim , alignItems: 'center', alignSelf: 'center' }} >
-        {p.foodMap.get(p.route.params.id) &&
+      <Animated.View style={{ height: '7%', minHeight: 50, position: 'absolute', bottom: p.anim , alignItems: 'center', alignSelf: 'center' }} >
           <Pagination
             food={p.foodMap.get(p.route.params.id)}
             setcurrent={p.setcurrent}
@@ -236,11 +230,10 @@ const ChildFood = (p) => {
             currentPage={p.currentPage}
             setcurrentPage={p.setcurrentPage}
           />
-        }
       </Animated.View>
 
 
-      {item2.title && item2.title != item3.title && <Animated.View style={[{ height: 200, width: 200, transform: [{ scale: animScale }], position: 'absolute', borderRadius: 11, borderWidth: 15, borderColor: 'silver', zIndex: 100, top: hidden, left: hidden2 }]} >
+      {item2.title && item2.title != item3.title && <Animated.View style={[{ height: 200, width: 200, transform: [{ scale: p.animScale }], position: 'absolute', borderRadius: 11, borderWidth: 15, borderColor: 'silver', zIndex: 100, top: hidden, left: hidden2 }]} >
         <ImageBackground style={[styles.img]} source={{ uri: `${localhost}/upload/food/${item2.imageUrl}` }}>
 
         </ImageBackground>
@@ -249,13 +242,13 @@ const ChildFood = (p) => {
 
       <Animated.View
         onStartShouldSetResponder={() => { p.navigation.navigate(p.tokenValue.fullname ? "FinallFoodPayment" : "Login", { name: 'ChildFood', price: inputPrice }) }}
-        style={[styles.buttomPayment, { height: anim, }]}>
+        style={[styles.buttomPayment, { height: p.anim, }]}>
         <Image style={[styles.imagePayment]} source={require('../../assets/images/a13.jpg')} />
         <View style={styles.ViewPayment}>
           <Text style={styles.titleSubTitle} >مشاهده ی سبد و پرداخت</Text>
           <View style={styles.containSubPrice}>
             <Text style={styles.textPayment}>قیمت کل :</Text>
-            <Text style={[styles.smalPrice, { marginTop: 12 }]} >{spacePrice(inputPrice)} تومان</Text>
+            <Text style={[styles.smalPrice, { marginTop: 12 }]} >{p.spacePrice(inputPrice)} تومان</Text>
           </View>
         </View>
       </Animated.View>

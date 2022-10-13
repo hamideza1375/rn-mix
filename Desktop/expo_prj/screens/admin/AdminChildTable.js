@@ -1,25 +1,30 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Button, Table } from '../../Components/Html';
+import { Button, Input, Table } from '../../Components/Html';
 import styles from "./styles/Admin.js"
+import style from "../food/styles/Food"
 import Loading from '../../Components/Loading'
 import _Modal from './Modal';
 import Pagination from '../../Components/Pagination';
 
 const AdminChildTable = (p) => {
   const sendSetavailable = async (available, id, id2) => p._admin.available(available, id, id2)
-  const deleteUnmunt = async () => p._admin.deleteUnmunt(p.id2)
-  p._food.getChildFood2()
+  p._food.getChildFood()
+
   return (
     <View flex={1} style={[styles.container]}>
-      <View style={{width:'90%', alignSelf:'center'}} >
-        <Button style={{height:32}} ph={8} mv={5} onPress={() => p.navigation.navigate("CreateChildFood", { id: p.route.params.id, })}>ساخت </Button>
-        <View style={{height:'calc(100vh - 165px)', width:'100%'}}>
+
+      
+
+      <View style={{ width: '90%', alignSelf: 'center' }} >
+        <Button style={{ height: 32 }} ph={8} mv={5} onPress={() => p.navigation.navigate("CreateChildFood", { id: p.route.params.id, })}>ساخت </Button>
+        <View style={{ height: 'calc(100vh - 165px)', width: '100%' }}>
           {!p.current ?
             <Loading />
             :
             <Table
               color={['#555', '#656565', 'white']}
+              border={[1, '#353535']}
               header={['موجودیت', 'ویرایش', 'حذف', ' قیمت', 'عنوان']}
               body={['موجودیت', 'ویرایش', ' حذف', 'price', 'title']}
               btn3={'#d33'}
@@ -35,25 +40,23 @@ const AdminChildTable = (p) => {
           }
         </View>
         <_Modal availabe={(param) => { sendSetavailable(param, p.route.params.id, p.id2); p.setshow(false) }} showModal={p.show} setshowModal={p.setshow} message={'موجود نیست؟' + " (" + p.current[p.$food[1]]?.title + ')'} _admin={p._admin} />
-        <_Modal deleteUnmunt={deleteUnmunt} showModal={p.showModal} setshowModal={p.setshowModal} id={p.id} id2={p.id2} message={'حذف شود؟ ' + " (" + p.current[p.$food[1]]?.title + ')'} _admin={p._admin} />
+        <_Modal showModal={p.showModal} setshowModal={p.setshowModal} id={p.id} id2={p.id2} message={'حذف شود؟ ' + " (" + p.current[p.$food[1]]?.title + ')'} _admin={p._admin} />
       </View>
 
-      <View style={{ flex:.1,top:3, bottom: 1, zIndex: 111, alignItems: 'center', alignSelf: 'center' }} >
-          {p.foodMap.get(p.route.params.id) &&
-            <Pagination
-            food={p.foodMap.get(p.route.params.id)}
-            setcurrent={p.setcurrent}
-            pageLimit={p.pageLimit}
-            ass={p.ass}
-            page={p.page}
-            setpage={p.setpage}
-            currentPage={p.currentPage}
-            setcurrentPage={p.setcurrentPage}
-            // id={p.route.params.id}
-            // currentMap={p.currentMap}
-            />
-          }
-        </View>
+      <View style={{ flex: .1, top: 3, bottom: 1, zIndex: 111, alignItems: 'center', alignSelf: 'center' }} >
+        <Pagination
+          food={p.foodMap.get(p.route.params.id)}
+          setcurrent={p.setcurrent}
+          pageLimit={p.pageLimit}
+          ass={p.ass}
+          page={p.page}
+          setpage={p.setpage}
+          currentPage={p.currentPage}
+          setcurrentPage={p.setcurrentPage}
+        // id={p.route.params.id}
+        // currentMap={p.currentMap}
+        />
+      </View>
 
     </View>
   )

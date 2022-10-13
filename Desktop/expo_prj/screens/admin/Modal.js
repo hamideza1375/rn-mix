@@ -10,7 +10,6 @@ const _Modal = (p) => {
     if (p.id && p.id2) p._admin.deleteChildFoodAction(p.id, p.id2)
     p.id && !p.id2 && p._admin.deleteFoodAction(p.id) 
     p.setshowModal(!p.showModal);
-    p.deleteUnmunt && p.deleteUnmunt(p.id2)
     p.availabe && p.availabe(false)
   }
 

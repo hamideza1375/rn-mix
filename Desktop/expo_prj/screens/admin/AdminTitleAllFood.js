@@ -17,6 +17,7 @@ const AdminTitleAllFood = function (p) {
             :
       <Table 
        color={['#555','#656565','white']}
+       border={[1,'#353535']}
         header={['edit','دیدن','پاک کردن', 'عنوان']}
         body={['edit','دیدن','پاک کردن', 'title' ]}
         btn3={'#d33'}
@@ -28,6 +29,7 @@ const AdminTitleAllFood = function (p) {
         fontSize={16}
         object={p.foods}
         setobject={p.set$food}
+        mt={20}
         />
       }
 

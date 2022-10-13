@@ -1,6 +1,25 @@
 import { createContext, useContext, useState } from 'react';
-import { Dimensions } from 'react-native';
 import {localhost} from '../../utils/axios/axios'
+import jwt_decode from "jwt-decode";
+
+import localStorage from '@react-native-async-storage/async-storage'
+import Alert from "../alert"
+import { create, close } from '../notification'
+import moment from "moment-jalaali";
+
+import { useCallback, useEffect, useMemo } from "react";
+import { useFocusEffect } from '@react-navigation/native';
+import { Keyboard, BackHandler, ToastAndroid, Platform, Dimensions, Animated } from "react-native";
+
+import { verifycodeRegister, sendcode, verifycode, loginUser, registerUser, forgetpassword, resetpassword } from "../../services/userService"
+import { geocode, reverse, sendProfile, getSingleTitleFoods,editcomment, deletecomment, getallchildfood, getfoods, getcommentchildfood, createcommentchildfood, getsinglechildfood, getcommentsinglefood, payment, getProfile, notification } from '../../services/foodService'
+import { getAllAddress, deleteAddress, deleteAllAddress, useradmin, deleteAdmin, getAlluserAdmin, changeAdmin, createfood, editfood, deletefood, createchildfood, editchildfood, deletechildfood, createNotification, unAvailable, listAvailable } from "../../services/adminService";
+import spacePrice from '../../utils/spacePrice';
+import { courseIdValidator } from '../../utils/IdValidator';
+import { truncate } from '../../utils/helpers';
+
+
+
 function State() {
   const _width = Dimensions.get('window').width;
   const _height = Dimensions.get('window').height;
@@ -43,11 +62,12 @@ function State() {
   const [ass, setass] = useState(true)
   const [showModal, setshowModal] = useState(false)
   const [current, setcurrent] = useState([])
+  const [currentComment, setcurrentComment] = useState([])
   const [sercher, setsercher] = useState([])
   const [srch, setsrch] = useState([])
   const [page, setpage] = useState(1)
   const [currentPage, setcurrentPage] = useState(1)
-  const [pageLimit] = useState(12)
+  const [pageLimit] = useState(7)
   const [piza, setpiza] = useState([])
   const [sandwich, setsandwich] = useState([])
   const [drink, setdrink] = useState([])
@@ -116,9 +136,43 @@ function State() {
   const [code, setcode] = useState('')
   const [changeRegister, setchangeRegister] = useState(false)
   const [fromMomemt, setfromMomemt] = useState()
+  const [ass2, setass2] = useState(false)
+  const [page2,setpage2] = useState(1)
+  const [currentPage2,setcurrentPage2] = useState(1)
+  const [sendMessage, setsendMessage] = useState(true)
+  const [changeChildfood, setchangeChildfood] = useState(true)
+	const [showBtn, setshowBtn] = useState(false)
+	const [qualification, setqualification] = useState('')
+  
+
+  const [anim] = useState(new Animated.Value(0))
+  const [animScale] = useState(new Animated.Value(1))
+  const [_list, set_list] = useState([])
+
+
+
   return {
+    verifycodeRegister, sendcode, verifycode, loginUser, registerUser, forgetpassword, resetpassword,
+    geocode, reverse, sendProfile, getSingleTitleFoods,editcomment, deletecomment, getallchildfood, getfoods, getcommentchildfood, createcommentchildfood, getsinglechildfood, getcommentsinglefood, payment, getProfile, notification,
+    getAllAddress, deleteAddress, deleteAllAddress, useradmin, deleteAdmin, getAlluserAdmin, changeAdmin, createfood, editfood, deletefood, createchildfood, editchildfood, deletechildfood, createNotification, unAvailable, listAvailable,
+
+    Keyboard, BackHandler, ToastAndroid, Platform, Dimensions,
+    useCallback, useEffect, useMemo, useFocusEffect,
+    moment, jwt_decode, localStorage, Alert, create, close, spacePrice, courseIdValidator,truncate,
+   
+    anim,animScale,
+    _list, set_list,
+    qualification, setqualification,
+    showBtn, setshowBtn,
+    changeChildfood, setchangeChildfood,
+    sendMessage, setsendMessage,
+    currentPage2,setcurrentPage2,
+    page2,setpage2,
+    ass2, setass2,
+    currentComment, setcurrentComment,
     fromMomemt, setfromMomemt,
     host,
+    localhost,
     changeRegister, setchangeRegister,
     code, setcode,
     input,setinput,
@@ -228,6 +282,6 @@ function State() {
     severalShow, setseveralShow,
   }
 }
-export const states =()=> State()
+export const states = () => State()
 export const contextStates = createContext(states);
 export const context = () => useContext(contextStates)

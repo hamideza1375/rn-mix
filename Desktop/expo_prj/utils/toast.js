@@ -1,70 +1,62 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Animated } from "react-native";
 import { Span, P } from "../Components/Html";
-let list = []
 let toastProperties;
 
-export function Toast() {
-  const [lists, setlist] = useState(false)
-
+export function Toast(p) {
   this.show = (title, description) => {
-    setlist(!lists)
     toastProperties = {
-      id: list.length ? list[list.length - 1].id + 1 : 1,
-      id2: list.length ? list[list.length - 1].id + 1 : 1,
+      id: Math.random(),
+      id2: Math.random(),
       title,
       description,
       backgroundColor: '#555'
     }
-    list = [...list, toastProperties]
+    p.set_list(l=>[...l, toastProperties])
   };
 
   this.success = (title, description) => {
-    setlist(!lists)
     toastProperties = {
-      id: list.length ? list[list.length - 1].id + 1 : 1,
-      id2: list.length ? list[list.length - 1].id + 1 : 1,
+      id: Math.random(),
+      id2: Math.random(),
       title,
       description,
       backgroundColor: '#5cb85c'
     }
-    list = [...list, toastProperties]
+    p.set_list(l=>[...l, toastProperties])
   };
 
   this.error = (title, description) => {
-    setlist(!lists)
     toastProperties = {
-      id: list.length ? list[list.length - 1].id + 1 : 1,
-      id2: list.length ? list[list.length - 1].id + 1 : 1,
+      id: Math.random(),
+      id2: Math.random(),
       title,
       description,
       backgroundColor: '#d9534f'
     }
-    list = [...list, toastProperties]
+    p.set_list(l=>[...l, toastProperties])
   };
 
   this.info = (title, description) => {
-    setlist(!lists)
     toastProperties = {
-      id: list.length ? list[list.length - 1].id + 1 : 1,
-      id2: list.length ? list[list.length - 1].id + 1 : 1,
+      id: Math.random(),
+      id2: Math.random(),
       title,
       description,
       backgroundColor: '#5bc0de'
     }
-    list = [...list, toastProperties]
+    p.set_list(l=>[...l, toastProperties])
   };
 
   this.warning = (title, description) => {
-    setlist(!lists)
     toastProperties = {
-      id: list.length ? list[list.length - 1].id + 1 : 1,
-      id2: list.length ? list[list.length - 1].id + 1 : 1,
+      id: Math.random(),
+      id2: Math.random(),
       title,
       description,
       backgroundColor: '#f0ad4e'
     }
-    list = [...list, toastProperties]
+    p.set_list((l)=>[...l, toastProperties])
   };
 }
 
@@ -78,23 +70,23 @@ const shadow = {
     height: 2,
   },
 }
-
 let interval
-const ToastProvider = () => {
-  const [_list, set_list] = useState([])
-  useEffect(() => {
-    set_list(list)
-    for (let i in list) {
-      interval = setTimeout(() => {
-        if (list[i]) {
-          set_list(list => list.filter((l) => l.id !== list[i].id))
-          list = list.filter((l) => l.id !== list[i].id)
-        }
-        if(!list[i]) clearInterval(interval)
-      }, 10000 * (i + 1));
-    }
-  }, [list])
 
+const ToastProvider = (p) => {
+  if (!p._list.length ) clearInterval(interval)
+
+  useEffect(() => {
+    for (let i in p._list) {
+      interval = setTimeout(() => {
+        if (p._list[i]) {
+          p.set_list(list => list.filter((l) => l?.id !== list[i]?.id))
+        }
+        if (!p._list.length ) clearInterval(interval)
+      }, 6000);
+    }
+  }, [p._list])
+
+  if (!p._list.length ) clearInterval(interval)
 
 
   const fadeAnim = useRef(new Animated.Value(-270)).current;
@@ -108,7 +100,7 @@ const ToastProvider = () => {
 
   return (
     <>
-      {_list.map((toast, i) => (
+      {p._list && p._list.map((toast, i) => (
         <Animated.View key={i}
           ref={() => { if (i === 0) { fadeAnim.setValue(-270) } }}
           onLayout={() => { start(); }}
@@ -120,13 +112,16 @@ const ToastProvider = () => {
           }]}>
           <Span style={{ paddingHorizontal: 14, paddingTop: 8 }} >
             <P style={{ padding: 6, color: 'white', position: 'absolute', top: 1, alignSelf: 'flex-end' }}
-              onClick={() => { let filter = _list.filter((l) => l.id !== toast.id); set_list(filter); list = filter }}>X</P>
+              onClick={() => { let filter = p._list.filter((l) => l.id !== toast.id); p.set_list(filter); }}>X</P>
             <P style={{ width: '100%', color: 'white', textAlign: 'right', paddingTop: 3 }} >{toast.title}</P>
             <P style={{ width: '100%', color: 'white', textAlign: 'right', fontSize: 14, fontWeight: '200', paddingTop: 15 }} >{toast.description}</P>
           </Span>
         </Animated.View>
       ))
       }
+
+      {p.children}
+
     </>
   )
 }

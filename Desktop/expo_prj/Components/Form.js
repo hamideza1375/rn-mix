@@ -6,13 +6,12 @@ import yub from '../utils/yub'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon5 from 'react-native-vector-icons/FontAwesome5';
 const newObj = new Proxy({}, yub);
-import { _scrollView } from '../screens/food/Home';
 import { useFocusEffect } from '@react-navigation/native';
 import { imagePicker } from '../utils/imagePicer'
 
 
 let interval
-const Form = ({ mt,bgcolor='#f0f0f0',f, e, p, cp, m, ch, c, t, pr, im, i, edit, s, ph,$code,code,setcode,
+const Form = ({ overflow,mAutoFocus,mt,bgcolor='#f0f0f0',f, e, p, cp, m, ch, c, t, pr, im, i, edit, s, ph,$code,code,setcode,
   title, settitle, price, setprice, phone, setphone,
   imageUrl, setImageUrl, info, setInfo
   , style, fullname, setfullname,
@@ -462,8 +461,7 @@ const Form = ({ mt,bgcolor='#f0f0f0',f, e, p, cp, m, ch, c, t, pr, im, i, edit, 
 
 
   return (
-
-    <_scrollView style={{ backgroundColor: bgcolor,borderRadius:3,marginTop:mt }} >
+    <ScrollView contentContainerStyle={{height:'calc(100vh - 160px)'}}  style={{ backgroundColor: bgcolor,borderRadius:3,marginTop:mt, overflow }} >
 
       <View style={[styles.viewContainer, { paddingTop: top }, style]} >
 
@@ -826,7 +824,8 @@ const Form = ({ mt,bgcolor='#f0f0f0',f, e, p, cp, m, ch, c, t, pr, im, i, edit, 
                 <Text style={[styles.textinput, { marginTop: 0 }]}>ارسال پیام</Text>
                 <View style={[{ height: '80.7%', marginBottom: 5 },
                 _message && !msg && { borderWidth: 1.2, borderColor: '#f22', borderRadius: 5 }]} >
-                  <Input
+                  <Input 
+                    autoFocus={mAutoFocus}
                     multiline
                     value={message}
                     onChangeText={(text) => setmessage(text)}
@@ -1098,7 +1097,7 @@ const Form = ({ mt,bgcolor='#f0f0f0',f, e, p, cp, m, ch, c, t, pr, im, i, edit, 
 
       </View>
     </View>
-    </_scrollView >
+    </ScrollView >
   )
 
 }

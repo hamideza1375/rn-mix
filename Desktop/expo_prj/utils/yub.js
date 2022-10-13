@@ -18,7 +18,10 @@
     }
     if (propName === 'email') {
       if (typeof target[propName] === 'string') {
-        if (target[propName].length < 5) {
+        if (!target[propName].length) {
+          return ('ایمیل نباید خالی باشد')
+        }
+        else if (target[propName].length < 5) {
           return ('ایمیل وارد شده صحیح نمیباشد')
         }
         else if (target[propName].length > 50) {
@@ -39,7 +42,10 @@
 
     if (propName === 'phone') {
       if (typeof target[propName] === 'string') {
-        if (target[propName].length < 11) {
+        if (!target[propName].length) {
+          return ('شماره تلفن نباید خالی باشد')
+        }
+       else if (target[propName].length < 11) {
           return ('شماره ی وارد شده صحیح نمیباشد')
         }
         else if (target[propName].length > 11) {

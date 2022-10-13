@@ -1,17 +1,10 @@
-import { useCallback, useEffect, useMemo } from "react";
-import { useFocusEffect } from '@react-navigation/native';
-import { getAllAddress, deleteAddress, deleteAllAddress, useradmin, deleteAdmin, getAlluserAdmin, changeAdmin, createfood, editfood, deletefood, createchildfood, editchildfood, deletechildfood, createNotification, unAvailable, listAvailable } from "../services/adminService";
-import { getallchildfood, getsinglechildfood } from "../services/foodService"
-import localStorage from "@react-native-async-storage/async-storage";
-import Alert from '../utils/alert'
-import moment from "moment-jalaali";
 
 export function adminState(p) {
 
   this.getAlluserAdmin = async () => {
-    useFocusEffect(useCallback(() => {
+    p.useFocusEffect(p.useCallback(() => {
       (async () => {
-        const { data } = await getAlluserAdmin()
+        const { data } = await p.getAlluserAdmin()
         p.setadmin(data)
       })()
     }, []))
@@ -19,29 +12,29 @@ export function adminState(p) {
 
 
   this.addAdmin = async () => {
-    await useradmin({ phone: p.phone });
+    await p.useradmin({ phone: p.phone });
     p.setphone('')
     p.navigation.goBack()
   }
 
 
   this.deleteAdmin = async () => {
-    await deleteAdmin({ phone: p.phone });
+    await p.deleteAdmin({ phone: p.phone });
     p.setphone('')
     p.navigation.goBack()
   }
 
 
   this.changeAdmin = async () => {
-    await changeAdmin({ adminPhone: p.phone, newAdminPhone: p.input });
+    await p.changeAdmin({ adminPhone: p.phone, newAdminPhone: p.input });
     p.setnavigateProfile(false)
     p.setnavigateUser(false)
     p.settokenValue({})
     p.settoken(false)
-    await localStorage.removeItem("token");
-    await localStorage.removeItem("exp");
+    await p.localStorage.removeItem("token");
+    await p.localStorage.removeItem("exp");
     for (let i of p.foods) {
-      const { data } = await getallchildfood(i._id)
+      const { data } = await p.getallchildfood(i._id)
       for (let item of data.child) {
         p.map.delete(item._id)
         p.map.delete(item.title)
@@ -60,14 +53,14 @@ export function adminState(p) {
 
   this.totalAllAddress = () => {
     let total = []
-    useFocusEffect(useCallback(() => {
+    p.useFocusEffect(p.useCallback(() => {
       p.allAddress.forEach((address) => {
         total.push(address.price)
       })
       const su = total.length && total.reduce((total, number) => total + number)
       p.settotalPrices(su);
 
-      localStorage.getItem('totalOldPrice').then((res) => {
+      p.localStorage.getItem('totalOldPrice').then((res) => {
         res && p.setoldPrice(JSON.parse(res))
       })
     }, [p.allAddress]))
@@ -84,16 +77,16 @@ export function adminState(p) {
   // }
 
   this.getAllAddress = async () => {
-    useEffect(() => {
-      getAllAddress().then(({ data }) => {
+    p.useEffect(() => {
+      p.getAllAddress().then(({ data }) => {
         p.setallAddress(data)
         p.set_address(data)
       })
     }, [p.change])
 
-    useMemo(() => {
+    p.useMemo(() => {
       setInterval(() => {
-        getAllAddress().then(({ data }) => {
+        p.getAllAddress().then(({ data }) => {
           if (p.allAddress.length !== data.length)
             p.setallAddress(data)
           p.set_address(data)
@@ -102,10 +95,10 @@ export function adminState(p) {
     }, [])
 
 
-    useEffect(() => {
+    p.useEffect(() => {
       for (let i in p.allAddress) {
         if (i == p.allAddress.length - 1)
-          p.setfromMomemt(moment(p.allAddress[i]?.createdAt).format('jM/jD'))
+          p.setfromMomemt(p.moment(p.allAddress[i]?.createdAt).format('jM/jD'))
   
       }
     }, [p.allAddress])
@@ -114,32 +107,32 @@ export function adminState(p) {
 
 
   this.deleteAddress = (_id) => {
-    Alert.alert(
+    p.Alert.alert(
       "مشتری حذف شود ؟",
       "",
       [
         { text: "Cancel", onPress:()=>{} },
-        { text: "OK", onPress: async () => { await deleteAddress(_id); p.setchange(!p.change); } }
+        { text: "OK", onPress: async () => { await p.deleteAddress(_id); p.setchange(!p.change); } }
       ])
   }
 
 
   this.deleteAllAddress = () => {
-    Alert.alert(
+    p.Alert.alert(
       "آیا از حذف تمام مشتریان مطمئنید؟",
       "",
       [
-        { text: "Cancel" },
+        { text: "Cancel", onPress:()=>{} },
         {
           text: "OK", onPress: async () => {
-            Alert.alert(
+            p.Alert.alert(
               "",
               "بعد از حذف دیگر قادر به برگرداندن نخواهید بود!!",
               [
-                { text: "Cancel" },
+                { text: "Cancel", onPress:()=>{} },
                 {
                   text: "yes", onPress: async () => {
-                    await deleteAllAddress(); await localStorage.setItem('totalOldPrice', JSON.stringify(p._moment + '=' + p.totalPrices)); p.setchange(!p.change);
+                    await p.deleteAllAddress(); await p.localStorage.setItem('totalOldPrice', JSON.stringify(p.fromMomemt + '=' + p.totalPrices)); p.setchange(!p.change); p.setshowBtn(true); p.setfromMomemt(null)
                   }
                 }])
           }
@@ -154,9 +147,9 @@ export function adminState(p) {
 
 
   this.getEdit = async () => {
-    useFocusEffect(useCallback(() => {
+    p.useFocusEffect(p.useCallback(() => {
       (async () => {
-        const { data } = await getsinglechildfood(p.route.params.id, p.route.params.id2)
+        const { data } = await p.getsinglechildfood(p.route.params.id, p.route.params.id2)
         p.settitle(data.child.title)
         p.setprice(data.child.price.toString())
         p.setImageUrl(data.child.imageUrl)
@@ -175,14 +168,15 @@ export function adminState(p) {
 
   // createfood
   this.createChild = async () => {
-    await createchildfood(p.route.params.id, { title: p.title, price: p.price, imageUrl: p.imageUrl, info: p.info })
+    await p.createchildfood(p.route.params.id, { title: p.title, price: p.price, imageUrl: p.imageUrl, info: p.info })
+    let current = [...p.current,{ title: p.title, price: p.price, imageUrl: p.imageUrl, info: p.info, available :true}]
+    p.setcurrent(current)
+    p.setchangeChildfood(!p.changeChildfood)
     p.settitle('')
     p.setprice('')
     p.setInfo('')
     p.setImageUrl('')
-    p.setchangeFood(!p.changeFood)
     p.navigation.goBack()
-    p.setchangeFood(!p.changeFood)
   }
 
 
@@ -192,7 +186,7 @@ export function adminState(p) {
 
   // createpartfood
   this.createFoodAction = async () => {
-    await createfood({ title: p.title, imageUrl: p.imageUrl })
+    await p.createfood({ title: p.title, imageUrl: p.imageUrl })
     p.setchangeFood(!p.changeFood)
     p.settitle('')
     p.setImageUrl('')
@@ -203,13 +197,15 @@ export function adminState(p) {
 
   // DeleteFood
   this.deleteChildFoodAction = async (id, id2) => {
-    await deletechildfood(id, id2)
-    // p.setchangeFood(!p.changeFood)
+    await p.deletechildfood(id, id2)
+    let current = [...p.current]
+    let filter = current.filter(c=>c._id !== id2)
+    p.setcurrent(filter)
+    p.setchangeChildfood(!p.changeChildfood)
   }
   // DeleteFood
-
   this.deleteFoodAction = async (id) => {
-    await deletefood(id)
+    await p.deletefood(id)
     p.setchangeFood(!p.changeFood)
   }
   // DeleteFoods
@@ -217,13 +213,20 @@ export function adminState(p) {
 
 
   this.editeFoodAction = async () => {
-    await editchildfood(p.route.params.id, p.route.params.id2, { title: p.title, price: p.price, imageUrl: p.imageUrl, info: p.info })
-    p.setchangeFood(!p.changeFood)
+    await p.editchildfood(p.route.params.id, p.route.params.id2, { title: p.title, price: p.price, imageUrl: p.imageUrl, info: p.info })
+    let current = p.current.find(c=>c._id === p.route.params.id2)
+    if(current){
+    current.title = p.title
+    current.price = p.price
+    current.imageUrl = p.imageUrl
+    current.info = p.info
+    p.setchangeChildfood(!p.changeChildfood)
+   }
     p.navigation.goBack()
   }
 
   this.unmountEditFood = async () => {
-    useFocusEffect(useCallback(() => {
+    p.useFocusEffect(p.useCallback(() => {
       let foodMap = p.foodMap.get(p.route.params.id2);
       return () => p.foodMap.set(p.route.params.id, foodMap)
     }, []))
@@ -232,7 +235,7 @@ export function adminState(p) {
 
 
   this.editeFoods = async () => {
-    await editfood(p.route.params.id, { title: p.title, imageUrl: p.imageUrl })
+    await p.editfood(p.route.params.id, { title: p.title, imageUrl: p.imageUrl })
     p.navigation.goBack()
   }
   //EditeFoods
@@ -240,20 +243,18 @@ export function adminState(p) {
 
 
   this.available = async (available, id, id2) => {
-    await unAvailable({ available }, id, id2)
-    p.setchangeFood(!p.changeFood)
-  }
-
-
-  this.deleteUnmunt = async (id2) => {
-    p.setchangeFood(!p.changeFood)
-
+    await p.unAvailable({ available }, id, id2)
+    let current = [...p.current]
+    let find = current.findIndex(c=>c._id === p.id2)
+    if(current) current[find].available = available
+    p.setcurrent(current)
+    p.setchangeChildfood(!p.changeChildfood)
   }
 
 
   this.listAvailable = async () => {
-    useFocusEffect(useCallback(() => {
-      listAvailable().then(({ data }) => {
+    p.useFocusEffect(p.useCallback(() => {
+      p.listAvailable().then(({ data }) => {
         p.setlist(data)
       })
     }, [p.showModalAvailabe, p.id, p._id]))
@@ -262,7 +263,7 @@ export function adminState(p) {
 
 
   this.sendAvailable = async () => {
-    await unAvailable({ available: true }, p.id, p._id)
+    await p.unAvailable({ available: true }, p.id, p._id)
     p.setshowModalAvailabe(!p.showModalAvailabe)
   }
 
@@ -270,7 +271,7 @@ export function adminState(p) {
 
 
   this.notifee = async () => {
-    await createNotification({ title: p.title, message: p.info })
+    await p.createNotification({ title: p.title, message: p.info })
     p.navigation.goBack()
   }
 

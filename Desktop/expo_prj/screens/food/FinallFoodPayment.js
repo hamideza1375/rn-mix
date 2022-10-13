@@ -4,8 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button, P, Table } from '../../Components/Html';
 import Loading from '../../Components/Loading'
 import styles from "./styles/Food.js"
-import {localhost} from '../../utils/axios/axios'
-import spacePrice from '../../utils/spacePrice';
 
 const FinallFoodPayment = (p) => {
   const inputPrice = `${p.allprice ? p.allprice : '0'}`
@@ -15,12 +13,11 @@ const FinallFoodPayment = (p) => {
   const minus = (index, item) => p._food.minusNum(index, item)
   const deleteAsyncStorage = () => p._food.deleteStorage()
 
-
   return (
         <View style={styles.viewHead}>
           <View style={styles.viewOne}>
             <View style={styles.viewConseal} >
-              <Button disabled={allfood.length ? false : true} bgcolor="yellow" style={styles.btnFinal} onPress={deleteAsyncStorage} >لغو سفارش</Button>
+              <Button disabled={allfood.length ? false : true} bgcolor="orange" style={styles.btnFinal} onPress={deleteAsyncStorage} >لغو سفارش</Button>
             </View>
             <View style={{ width: '96%', alignSelf: 'center', height:'calc(100vh - 190px)' }} >
               {!allfood.length ?
@@ -28,15 +25,16 @@ const FinallFoodPayment = (p) => {
                 :
                 <ScrollView style={styles.scrollTable} contentContainerStyle={{ flexGrow: 1, paddingBottom: 55 }} >
                   <Table
-                    color={['#555', '#656565', 'white']}
+                    color={['#f90', '#f80', 'white']}
                     fontSize={14}
                     header={['جمع', 'عنوان']}
                     body={['total', 'title']}
                     object={allfood}
+                    border={[1,'#f70']}
                   />
                   <View style={{}}>
-                    <P fontSize={13.5} border={[.5]} style={{ height: 33, flex: 1, textAlign: 'center', alignSelf: 'center', width: '99%' }} >قیمت کل: </P>
-                    <P fontSize={13.5} border={[.5]} style={{ height: 33, flex: 1, textAlign: 'center', alignSelf: 'center', width: '99%' }} >{spacePrice(inputPrice, null)} ت</P>
+                    <P fontSize={13.5} border={[.5,'#f70']} style={{ height: 33, flex: 1, textAlign: 'center', alignSelf: 'center', width: '99%' }} >قیمت کل: </P>
+                    <P fontSize={13.5} border={[.5,'#f70']} style={{ height: 33, flex: 1, textAlign: 'center', alignSelf: 'center', width: '99%' }} >{p.spacePrice(inputPrice, null)} ت</P>
                   </View>
                 </ScrollView>
               }
@@ -44,7 +42,7 @@ const FinallFoodPayment = (p) => {
           </View>
           <View style={styles.viewPayment}>
             <View style={styles.viewPayTwo}>
-              <Button disabled={allfood.length ? false : true} bgcolor="yellow"
+              <Button disabled={allfood.length ? false : true} bgcolor="orange"
                 style={styles.btnFinal}
                 onPress={() => { p.navigation.navigate("Location") }}
               >
@@ -58,7 +56,7 @@ const FinallFoodPayment = (p) => {
                 <ScrollView contentContainerStyle={[styles.scrollContent, { paddingBottom: 45}]} >
                   {allfood.map((item, index) => (
                     <View key={item._id} style={[styles.viewKey]}>
-                      <ImageBackground style={[styles.imageFinalFood]} source={{ uri: `${localhost}/upload/food/${item.imageUrl}` }} >
+                      <ImageBackground style={[styles.imageFinalFood]} source={{ uri: `${p.localhost}/upload/food/${item.imageUrl}` }} >
                         <Text style={[styles.textTitleFinal]}>{item.title}</Text>
                       </ImageBackground>
                       <View style={[styles.containButtomImage]} >
@@ -72,7 +70,7 @@ const FinallFoodPayment = (p) => {
                         </View>
                         <View style={[styles.textPrice]}>
                           <Text style={{ textAlign: 'right', width:80, }} >قیمت:</Text>
-                          <Text style={{ textAlign: 'right',fontSize: 13,width:80 }} >{spacePrice(item.price, null)} <Text style={{ fontSize: 12 }}>ت</Text></Text>
+                          <Text style={{ textAlign: 'right',fontSize: 13,width:80 }} >{p.spacePrice(item.price, null)} <Text style={{ fontSize: 12 }}>ت</Text></Text>
                         </View>
                       </View>
                     </View>
