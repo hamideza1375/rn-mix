@@ -4,6 +4,7 @@ import { localhost } from '../../utils/axios/axios'
 import Pagination from '../../Components/Pagination';
 import Loading from '../../Components/Loading'
 import { StyleSheet, FlatList, ImgBackground, Input, P, Press, Span, Icon, Animated, Img } from '../../Components/Html'
+import { Text } from 'react-native';
 
 let styleScroll = {}
 let numColumns
@@ -99,7 +100,7 @@ const ChildFood = (p) => {
       </Span>
 
       <Span class={s.viewContainer} style={p.width > p.height && { paddingHorizontal: 22, alignSelf: 'center' }} >
-        <Span class={s.flatlistContain}>
+        <>
           {!p.current ?
             <Loading />
             :
@@ -120,8 +121,8 @@ const ChildFood = (p) => {
                   ]}>
 
                     <Press style={{ height: '55%', backgroundColor: '#eee' }} onPress={() => { p.navigation.navigate("SingleFood", { title: item.title, id: p.route.params.id, id2: item._id, page: p.page }) }} >
-                      <ImgBackground class={[s.img]} src={{ uri: `${localhost}/upload/food/${item.imageUrl}` }}>
-                        <P p={0} class={s.textTitleChild}>{item.title}</P>
+                      <ImgBackground class={[s.img, s.radius]} containClass={s.radius} src={{ uri: `${localhost}/upload/food/${item.imageUrl}` }}>
+                        <P p={0} mt='auto' class={s.textTitleChild} >{item.title}</P>
                       </ImgBackground>
                     </Press>
                     <Span class={s.subImg} >
@@ -187,7 +188,7 @@ const ChildFood = (p) => {
                                     style={{ marginTop: 3, fontSize: p.width < 360 ? 10.5 : 13, }} />
                                 </>
                                 :
-                                <P p={0} style={{ color: 'red', borderWidth: 1, borderColor: 'red', marginTop: 10, width: 50, textAlign: 'center', borderColor: 'red', padding: 3, transform: [{ rotate: '-20deg' }], fontSize: p.width < 360 ? 10.5 : 13 }}>ناموجود</P>
+                                <P p={3} style={{ color: 'red', borderWidth: 1, borderColor: 'red', marginTop: 10, width: 50, textAlign: 'right', borderColor: 'red', paddingRight: 5, transform: [{ rotate: '-20deg' }], fontSize: p.width < 360 ? 10.5 : 12 }}>ناموجود</P>
                             }
                           </Span>
                         </Span>
@@ -196,7 +197,7 @@ const ChildFood = (p) => {
                   </Span>
                 </>)} />
           }
-        </Span >
+        </ >
         <Animated.View style={[styles.paginationContain, { bottom: p.anim }]} >
           {p.foodMap.get(p.route.params.id) &&
             <Pagination
@@ -221,12 +222,12 @@ const ChildFood = (p) => {
         <Animated.View
           onStartShouldSetResponder={() => { p.navigation.navigate(p.tokenValue.fullname ? "FinallFoodPayment" : "Login", { name: 'ChildFood', price: inputPrice }) }}
           style={[styles.buttomPayment, { height: p.anim, }]}>
-          <Img class={s.imagePayment} src={require('../../assets/images/a13.jpg')} />
+          <Img class={s.imagePayment} src={{uri:`${localhost}/images/food_image.jpg`}} />
           <Span class={s.ViewPayment}>
             <P p={0} class={s.titleSubTitle} >مشاهده ی سبد و پرداخت 🛒</P>
             <Span class={s.containSubPrice}>
               <P p={0} class={s.textPayment}>قیمت کل :</P>
-              <P p={0} class={[s.smalPrice, { marginTop: 12 }]} >{p.spacePrice(inputPrice)} تومان</P>
+              <P p={0} >{p.spacePrice(inputPrice)} تومان</P>
             </Span>
           </Span>
         </Animated.View>

@@ -14,7 +14,7 @@ const Loading = (props) => {
   }, []))
   return (
     <View style={[{ minWidth: '100%', justifyContent: 'center', alignItems: 'center', top: 40 }, props.style]} >
-      <View style={{ marginBottom: 'auto' }} >
+      <View style={{ marginBottom: 'auto', }} >
         {showLoad ?
           < ActivityIndicator {...props} style={{ transform: [{ scale: 2 }] }} />
           :

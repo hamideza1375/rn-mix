@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { KeyboardAvoidingView, Pressable, View, Text, TextInput, Image, StyleSheet, ScrollView, Dimensions, Animated } from 'react-native'
 import { Input, Button, CheckBox } from './Html'
-import Swiper from './Swiper'
 import yub from '../utils/yub'
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import Icon5 from 'react-native-vector-icons/dist/AntDesign';
 const newObj = new Proxy({}, yub);
 import { useFocusEffect } from '@react-navigation/native';
+import Frm from './Frm'
+import InputImage from './InputImage'
 
 // textContentType="oneTimeCode" and keyboardType="numeric"
 
@@ -28,7 +28,7 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
   setmessage, children, captcha, setcaptcha, host, checkText, setremember,remember,
   star1, setstar1, star2, setstar2, star3, setstar3, star4, setstar4, star5, setstar5, allstar,
   setallstar,
-  sizeY = 1, top = 25,
+  sizeY = 1, top = 10,
   setorientation, setwidth, setheight,
   fIconLeft, fIconRight, eIconLeft, eIconRight, pIconLeft, pIconRight, cpIconLeft, cpIconRight,
   tIconLeft, tIconRight, prIconLeft, prIconRight, iIconLeft, iIconRight, imIconLeft, imIconRight, phIconLeft, phIconRight,
@@ -69,73 +69,50 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
   }, [star1, star2, star3, star4, star5])
 
 
-
   Dimensions.addEventListener('change', ({ window: { width, height } }) => {
     if (width < height) { setorientation("PORTRAIT"); setwidth(width); setheight(height) }
     else { setorientation("LANDSCAPE"); setwidth(width); setheight(height) }
   })
 
-
-
   const [secure, setSecure] = useState(true)
   const [secure2, setSecure2] = useState(true)
-
   const [show, setshow] = useState(ch && !checkText?false:true)
   const [rand, setRand] = useState(parseInt(Math.random() * 9000 + 1000));
   const [show2, setShow2] = useState(false);
-
   const [changeRand, setchangeRand] = useState(false);
-
   const [changeremember, setchangeremember] = useState(true);
-
   const refInput = React.useRef()
-
 
   useFocusEffect(useCallback(() => {
     console.log(9)
     changeRand && setRand(parseInt(Math.random() * 9000 + 1000))
   }, [show2]))
 
-
-
-
   const [_fullname, set_Fullname] = useState()
   const [_email, set_Email] = useState()
   const [_password, set_Password] = useState()
   const [_confirmPassword, set_ConfirmPassword] = useState()
-
   const [_title, set_Title] = useState()
   const [_price, set_Price] = useState()
   const [_imageUrl, set_ImageUrl] = useState()
   const [_info, set_Info] = useState()
-
   const [_message, set_Message] = useState()
   const [_checkbox, set_Checkbox] = useState()
-
   const [_captcha, set_Captcha] = useState()
   const [_allstar, set_Allstar] = useState()
   const [_phone, set_Phone] = useState()
-
-  const [_googleCaptcha, set_googleCaptcha] = useState(false)
-
-
-
 
   newObj.phone = phone;
   newObj.fullname = fullname
   newObj.email = email;
   newObj.password = password;
   newObj.confirmPassword = confirmPassword;
-
   newObj.title = title
   newObj.price = price;
   newObj.imageUrl = imageUrl;
   newObj.info = info;
-
   newObj.message = message;
-
   newObj.allstar = allstar;
-
 
   var pon = ph ? newObj.phone === phone : true
   var flm = f ? newObj.fullname === fullname : true
@@ -144,7 +121,6 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
   var cfpsd = cp ? newObj.confirmPassword === confirmPassword : true
   var msg = m ? newObj.message === message : true
   var cap = c ? (rand == captcha) ? true : false : true
-
   var titl = t ? newObj.title === title : true
   var prc = pr ? newObj.price === price : true
   var img = im ? !edit ? newObj.imageUrl === imageUrl : true : true
@@ -152,685 +128,175 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
 
 
 
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const fadeAnim2 = useRef(new Animated.Value(0)).current;
-  const fadeAnimPh = useRef(new Animated.Value(0)).current;
-  const fadeAnim3 = useRef(new Animated.Value(0)).current;
-  const fadeAnim4 = useRef(new Animated.Value(0)).current;
-
-  const fadeAnim5 = useRef(new Animated.Value(0)).current;
-  const fadeAnim6 = useRef(new Animated.Value(0)).current;
-  const fadeAnim7 = useRef(new Animated.Value(0)).current;
-  const fadeAnim8 = useRef(new Animated.Value(0)).current;
-
-  const fadeOut = () => {
-    Animated.sequence([
-      Animated.timing(fadeAnim, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      })
-    ]).start();
-  };
-  const iterPlt = fadeAnim.interpolate({
-    inputRange: [0, 5],
-    outputRange: ["#f22", "black"]
-  })
-
-
-  const fadeOut2 = () => {
-    Animated.sequence([
-      Animated.timing(fadeAnim2, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim2, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim2, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim2, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      })
-    ]).start();
-  };
-  const iterPlt2 = fadeAnim2.interpolate({
-    inputRange: [0, 5],
-    outputRange: ["#f22", "black"]
-  })
-
-
-
-  const fadeOutPh = () => {
-    Animated.sequence([
-      Animated.timing(fadeAnimPh, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnimPh, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnimPh, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnimPh, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      })
-    ]).start();
-  };
-  const iterPltPh = fadeAnimPh.interpolate({
-    inputRange: [0, 5],
-    outputRange: ["#f22", "black"]
-  })
-
-
-
-  const fadeOut3 = () => {
-    Animated.sequence([
-      Animated.timing(fadeAnim3, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim3, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim3, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim3, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      })
-    ]).start();
-  };
-  const iterPlt3 = fadeAnim3.interpolate({
-    inputRange: [0, 5],
-    outputRange: ["#f22", "black"]
-  })
-
-
-  const fadeOut4 = () => {
-    Animated.sequence([
-      Animated.timing(fadeAnim4, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim4, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim4, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim4, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      })
-    ]).start();
-  };
-  const iterPlt4 = fadeAnim4.interpolate({
-    inputRange: [0, 5],
-    outputRange: ["#f22", "black"]
-  })
-
-
-
-
-
-
-
-
-
-
-  const fadeOut5 = () => {
-    Animated.sequence([
-      Animated.timing(fadeAnim5, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim5, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim5, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim5, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      })
-    ]).start();
-  };
-  const iterPlt5 = fadeAnim5.interpolate({
-    inputRange: [0, 5],
-    outputRange: ["#f22", "black"]
-  })
-
-
-  const fadeOut6 = () => {
-    Animated.sequence([
-      Animated.timing(fadeAnim6, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim6, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim6, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim6, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      })
-    ]).start();
-  };
-  const iterPlt6 = fadeAnim6.interpolate({
-    inputRange: [0, 5],
-    outputRange: ["#f22", "black"]
-  })
-
-
-  const fadeOut7 = () => {
-    Animated.sequence([
-      Animated.timing(fadeAnim7, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim7, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim7, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim7, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      })
-    ]).start();
-  };
-  const iterPlt7 = fadeAnim7.interpolate({
-    inputRange: [0, 5],
-    outputRange: ["#f22", "black"]
-  })
-
-
-  const fadeOut8 = () => {
-    Animated.sequence([
-      Animated.timing(fadeAnim8, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim8, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim8, {
-        toValue: 5,
-        duration: 100,
-        useNativeDriver: false
-      }),
-      Animated.timing(fadeAnim8, {
-        toValue: 0,
-        duration: 100,
-        useNativeDriver: false
-      })
-    ]).start();
-  };
-  const iterPlt8 = fadeAnim8.interpolate({
-    inputRange: [0, 5],
-    outputRange: ["#f22", "black"]
-  })
-
-
-
   return (
     <ScrollView contentContainerStyle={[{height:'auto', overflow:!btn?'hidden':overflow},contentContainerStyle]}  style={{ backgroundColor: bgcolor,borderRadius:3,marginTop:mt, overflow:!btn?'hidden':overflow }} >
 
       <View style={[styles.viewContainer, { paddingTop: top }, style]} >
+        <View style={[{ transform: [{ scaleY: sizeY }], paddingTop: 10, paddingBottom:25 }]}>
 
-        <View style={[{ transform: [{ scaleY: sizeY }], paddingHorizontal: 20 }]}>
+        {f &&
+        <Frm
+        textContentType="username"
+        autoComplete="username" 
+        icon='user'
+        p='نام'
+        newObj={newObj.fullname} 
+        iconLeft={fIconLeft} 
+        iconRight={fIconRight} 
+        state={fullname} 
+        setState={setfullname} 
+        getBlur={_fullname} 
+        setBlur={set_Fullname} 
+        yub={flm} 
+        styles={styles}/>
+        }
 
+      {e && 
+        <Frm 
+         textContentType="emailAddress"
+         autoComplete="email"
+         keyboardType="email-address"
+         icon="envelope"
+         p='ایمیل'
+         newObj={newObj.email} 
+         iconLeft={eIconLeft} 
+         iconRight={eIconRight} 
+         state={email} 
+         setState={setemail}
+         getBlur={_email} 
+         setBlur={set_Email}  
+         yub={eml}
+         styles={styles}
+            />
+         }
 
+      {ph && 
+        <Frm 
+         textContentType="telephoneNumber"
+         autoComplete="tel"
+         keyboardType="phone-pad"
+         icon="phone"
+         p='شماره تلفن '
+         iconLeft={phIconLeft} 
+         iconRight={phIconRight} 
+         state={phone} 
+         setState={setphone}
+         getBlur={_phone} 
+         setBlur={set_Phone}  
+         newObj={newObj.phone} 
+         yub={pon}
+         styles={styles}
+            />
+         }
 
-          {
-            f &&
-            <KeyboardAvoidingView behavior={"height"} style={{ flex: 1 }}>
-              <Animated.View style={[styles.viewInput, { minHeight: 90 }, { marginBottom: 5 }]} >
-                <Swiper
-                  cansel={(fIconLeft || fIconRight) ? false : true}
-                  style={{ height: '100%', marginBottom: 20, paddingBottom: 20 }}
-                  styleRightIcon={{ top: 37 }}
-                  styleLeftIcon={{ top: 37 }}
-                  iconLeft={fIconLeft}
-                  iconRight={fIconRight}
-                >
-                  <Text style={[styles.textinput, { marginTop: 5 }]} >نام</Text>
-                  <Animated.View style={[styles.animatedBorder, _fullname && !flm && { borderWidth: 1.2, borderColor: iterPlt, transform: [{ translateX: fadeAnim }] }]} >
-                    <Input
-                      textContentType="username"
-                      autoComplete="username"
-                      icon="user"
-                      p=" نام "
-                      value={fullname}
-                      onChangeText={(text) => setfullname(text)}
-                      onBlur={() => { set_Fullname(true); !flm && fadeOut() }}
-                      style={[styles.input]}
-                    />
-                  </Animated.View>
-                  {_fullname && !flm && <Text style={[styles.textinput, { color: 'red' }]} >
-                    {newObj.fullname}
-                  </Text>
-                  }
-                </Swiper>
-              </Animated.View>
-            </KeyboardAvoidingView>
-          }
+       {p && 
+        <Frm 
+         textContentType="password"
+         autoComplete="password"
+         icon={!secure ? "eye" : "eye-slash"}
+         p="رمز عبور"
+         iconLeft={pIconLeft} 
+         iconRight={pIconRight} 
+         state={password} 
+         setState={setPassword}
+         getBlur={_password} 
+         setBlur={set_Password}  
+         newObj={newObj.password} 
+         yub={psd}
+         styles={styles}
+         secureTextEntry={secure}
+         iconPress={() => { setSecure(!secure); }}
+         />
+         }
 
+      {cp && 
+        <Frm 
+         textContentType="password"
+         autoComplete="password"
+         icon={!secure2 ? "eye" : "eye-slash"}
+         p=" تکرار رمز عبور "
+         iconLeft={cpIconLeft} 
+         iconRight={cpIconRight} 
+         state={confirmPassword} 
+         setState={setconfirmPassword}
+         getBlur={_confirmPassword} 
+         setBlur={set_ConfirmPassword}  
+         newObj={newObj.confirmPassword} 
+         yub={cfpsd}
+         styles={styles}
+         secureTextEntry={secure2}
+         iconPress={() => { setSecure2(!secure2); }}
+         />
+         }
 
+      {t && 
+        <Frm 
+         m_icon="title"
+         p="عنوان "
+         iconLeft={tIconLeft} 
+         iconRight={tIconRight} 
+         state={title} 
+         setState={settitle}
+         getBlur={_title} 
+         setBlur={set_Title}  
+         newObj={newObj.title} 
+         yub={titl}
+         styles={styles}
+         />
+         }
 
+      {pr && 
+        <Frm 
+        icon="dollar"
+        p=" قیمت "
+        iconLeft={prIconLeft} 
+         iconRight={prIconRight} 
+         state={price} 
+         setState={setprice}
+         getBlur={_price} 
+         setBlur={set_Price}  
+         newObj={newObj.price} 
+         yub={prc}
+         styles={styles}
+         keyboardType="numeric"
+         />
+         }
 
+       {i && 
+        <Frm 
+        icon="info"
+        p=" توضیحات "
+        iconLeft={iIconLeft} 
+         iconRight={iIconRight} 
+         state={info} 
+         setState={setInfo}
+         getBlur={_info} 
+         setBlur={set_Info}  
+         newObj={newObj.info} 
+         yub={inf}
+         styles={styles}
+         />
+         }
 
+       {m && 
+        <Frm 
+         p="پیام"
+         iconLeft={false} 
+         iconRight={false} 
+         state={message} 
+         setState={setmessage}
+         getBlur={_message} 
+         setBlur={set_Message}  
+         newObj={newObj.message} 
+         yub={msg}
+         styles={styles}
+         multiline
+         autoFocus={mAutoFocus}
+         />
+         }
 
-
-          {e &&
-            <KeyboardAvoidingView behavior={"height"} style={{ flex: 1 }}>
-              <Animated.View style={[styles.viewInput, { minHeight: 90 }, { marginBottom: 5 },
-              !eml && { transform: [{ translateX: fadeAnim2 }] }]} >
-                <Swiper cansel={(eIconLeft || eIconRight) ? false : true} style={{ height: '100%', marginBottom: 20, paddingBottom: 20 }}
-                  styleRightIcon={{ top: 37 }}
-                  styleLeftIcon={{ top: 37 }}
-                  iconLeft={eIconLeft}
-                  iconRight={eIconRight}>
-                  <Text style={[styles.textinput, { marginTop: 5 }]} >ایمیل</Text>
-                  <Animated.View style={[styles.animatedBorder, _email && !eml &&
-                    { borderWidth: 1.2, borderColor: iterPlt2 }]} >
-                    <Input p=" ایمیل "
-                      textContentType="emailAddress"
-                      autoComplete="email"
-                      icon="envelope"
-                      keyboardType="email-address"
-                      value={email}
-                      onChangeText={(text) => setemail(text)}
-                      onBlur={() => { set_Email(true); !eml && fadeOut2() }}
-                      style={styles.input}
-                    />
-                  </Animated.View>
-                  {_email && !eml && <Text style={[styles.textinput, { color: 'red' }]} >
-                    {newObj.email}
-                  </Text>}
-                </Swiper>
-              </Animated.View>
-            </KeyboardAvoidingView>
-          }
-
-
-
-
-
-
-          {ph &&
-            <KeyboardAvoidingView behavior={"height"} style={{ flex: 1 }}>
-              <Animated.View style={[styles.viewInput, { minHeight: 90 }, { marginBottom: 5 },
-              !pon && { transform: [{ translateX: fadeAnimPh }] }]} >
-                <Swiper cansel={(phIconLeft || phIconRight) ? false : true} style={{ height: '100%', marginBottom: 20, paddingBottom: 20 }}
-                  styleRightIcon={{ top: 37 }}
-                  styleLeftIcon={{ top: 37 }}
-                  iconLeft={phIconLeft}
-                  iconRight={phIconRight}>
-                  <Text style={[styles.textinput, { marginTop: 5 }]} >شماره تلفن</Text>
-                  <Animated.View style={[styles.animatedBorder, _phone && !pon &&
-                    { borderWidth: 1.2, borderColor: iterPlt }]} >
-                    <Input p=" شماره تلفن "
-                      textContentType="telephoneNumber"
-                      autoComplete="tel"
-                      icon="phone"
-                      keyboardType="phone-pad"
-                      value={phone}
-                      onChangeText={(text) => setphone(text)}
-                      onBlur={() => { set_Phone(true); !pon && fadeOutPh() }}
-                      style={styles.input}
-                    />
-                  </Animated.View>
-                  {_phone && !pon && <Text style={[styles.textinput, { color: 'red' }]} >
-                    {newObj.phone}
-                  </Text>}
-                </Swiper>
-              </Animated.View>
-            </KeyboardAvoidingView>
-          }
-
-
-
-
-
-
-
-
-
-
-          {p &&
-            <KeyboardAvoidingView behavior={"height"} style={{ flex: 1 }}>
-              <Animated.View style={[styles.viewInput, { minHeight: 90 }, { marginBottom: 5 }]} >
-                <Swiper cansel={(pIconLeft || pIconRight) ? false : true} style={{ height: '100%', marginBottom: 20, paddingBottom: 20 }}
-                  styleRightIcon={{ top: 37 }}
-                  styleLeftIcon={{ top: 37 }}
-                  iconLeft={pIconLeft}
-                  iconRight={pIconRight}
-                >
-                  <Text style={[styles.textinput, { marginTop: 5 }]} >رمز عبور</Text>
-                  <Animated.View style={[styles.animatedBorder, _password && !psd &&
-                  {
-                    borderWidth: 1.2, borderColor: iterPlt3, transform: [{ translateX: fadeAnim3 }]
-                  }]} >
-                    <Input p=" رمز عبور "
-                      textContentType="password"
-                      autoComplete="password"
-                      iconPress={() => { setSecure(!secure); }}
-                      icon={!secure ? "eye" : "eye-slash"}
-                      secureTextEntry={secure}
-                      value={password}
-                      onChangeText={(text) => setPassword(text)}
-                      onBlur={() => { set_Password(true); !psd && fadeOut3() }}
-                      style={styles.input}
-                    />
-                  </Animated.View>
-                  {_password && !psd && <Text style={[styles.textinput, { color: 'red' }]} >
-                    {newObj.password}
-                  </Text>}
-                </Swiper>
-              </Animated.View>
-            </KeyboardAvoidingView>
-          }
-
-
-
-
-
-          {cp &&
-            <KeyboardAvoidingView behavior={"height"} style={{ flex: 1 }}>
-              <Animated.View style={[styles.viewInput, { minHeight: 90 }, { marginBottom: 5 }]} >
-                <Swiper cansel={(cpIconLeft || cpIconRight) ? false : true} style={{ height: '100%', marginBottom: 20, paddingBottom: 20 }}
-                  styleRightIcon={{ top: 37 }}
-                  styleLeftIcon={{ top: 37 }}
-                  iconLeft={cpIconLeft}
-                  iconRight={cpIconRight}
-                >
-                  <Text style={[styles.textinput, { marginTop: 5 }]} >تکرار رمز عبور</Text>
-                  <Animated.View style={[styles.animatedBorder,
-                  _confirmPassword && !cfpsd &&
-                  { borderWidth: 1.2, borderColor: iterPlt4, transform: [{ translateX: fadeAnim4 }] }]} >
-                    <Input
-                      textContentType="password"
-                      autoComplete="password"
-                      iconPress={() => { setSecure2(!secure2); }}
-                      icon={!secure2 ? "eye" : "eye-slash"}
-                      secureTextEntry={secure2}
-                      value={confirmPassword}
-                      onChangeText={(text) => setconfirmPassword(text)}
-                      p=" تکرار رمز عبور "
-                      onBlur={() => { set_ConfirmPassword(true); !cfpsd && fadeOut4() }}
-                      style={styles.input}
-                    />
-                  </Animated.View>
-                  {_confirmPassword && !cfpsd && <Text style={[styles.textinput, { color: 'red' }]} >
-                    {newObj.confirmPassword}
-                  </Text>}
-                </Swiper>
-              </Animated.View>
-            </KeyboardAvoidingView >
-          }
-
-
-
-
-          {t &&
-            <KeyboardAvoidingView behavior={"height"} style={{ flex: 1 }}>
-              <Animated.View style={[styles.viewInput, { minHeight: 90 }, { marginBottom: 5 }]} >
-                <Swiper cansel={(tIconLeft || tIconRight) ? false : true} style={{ height: '100%', marginBottom: 20, paddingBottom: 20 }}
-                  styleRightIcon={{ top: 37 }}
-                  styleLeftIcon={{ top: 37 }}
-                  iconLeft={tIconLeft}
-                  iconRight={tIconRight}
-                >
-                  <Text style={[styles.textinput, { marginTop: 5 }]} >عنوان</Text>
-                  <Animated.View style={[
-                    styles.animatedBorder
-                    , _title && !titl &&
-                    {
-                      borderWidth: 1.2, borderColor: iterPlt5,
-                      transform: [{ translateX: fadeAnim5 }]
-                    }]} >
-                    <Input
-                      icon="header"
-                      p=" عنوان "
-                      value={title}
-                      onChangeText={(text) => settitle(text)}
-                      onBlur={() => { set_Title(true); !titl && fadeOut5() }}
-                      style={[styles.input]}
-                    />
-                  </Animated.View>
-                  {_title && !titl && <Text style={[styles.textinput, { color: 'red' }]} >
-                    {newObj.title}
-                  </Text>
-                  }
-                </Swiper>
-              </Animated.View>
-            </KeyboardAvoidingView>
-          }
-
-
-
-
-
-          {pr &&
-            <KeyboardAvoidingView behavior={"height"} style={{ flex: 1 }}>
-              <Animated.View style={[styles.viewInput, { minHeight: 90 }, { marginBottom: 5 },
-              !prc && { transform: [{ translateX: fadeAnim6 }] }]} >
-                <Swiper cansel={(prIconLeft || prIconRight) ? false : true} style={{ height: '100%', marginBottom: 20, paddingBottom: 20 }}
-                  styleRightIcon={{ top: 37 }}
-                  styleLeftIcon={{ top: 37 }}
-                  iconLeft={prIconLeft}
-                  iconRight={prIconRight}>
-                  <Text style={[styles.textinput, { marginTop: 5 }]} >قیمت</Text>
-                  <Animated.View style={[styles.animatedBorder,
-                  (_price && !prc) &&
-                  { borderWidth: 1.2, borderColor: iterPlt6 }]} >
-                    <Input p=" قیمت "
-                      icon="dollar"
-                      keyboardType="numeric"
-                      value={price}
-                      onChangeText={(text) => setprice(text)}
-                      onBlur={() => { set_Price(true); !prc && fadeOut6() }}
-                      style={styles.input}
-                    />
-                  </Animated.View>
-                  {_price && !prc && <Text style={[styles.textinput, { color: 'red' }]} >
-                    {newObj.price}
-                  </Text>}
-                </Swiper>
-              </Animated.View>
-            </KeyboardAvoidingView>
-          }
-
-
-
-
-
-
-          {im &&
-            <View style={{ flex: 1 }}>
-              <Animated.View style={[styles.viewInput, { minHeight: 90 }, { marginBottom: 5 }]} >
-                <Swiper cansel={(imIconLeft || imIconRight) ? false : true} style={{ height: '100%', marginBottom: 20, paddingBottom: 20 }}
-                  styleRightIcon={{ top: 37 }}
-                  styleLeftIcon={{ top: 37 }}
-                  iconLeft={imIconLeft}
-                  iconRight={imIconRight}
-                >
-                  <Text style={[styles.textinput, { marginTop: 5 }]} >گالری</Text>
-                  <Animated.View style={[styles.animatedBorder,
-                  _imageUrl && !img &&
-                  {
-                    borderWidth: 1.2, borderColor: iterPlt7,
-                    transform: [{ translateX: fadeAnim7 }]
-                  }]} >
-                    <View style={{border:'1px solid #111', marginBottom: 5,
-                      height: 50,
-                      backgroundColor:'#fff',
-                      justifyContent:'center',
-                      minWidth: '90%',borderRadius:5, boxShadow:'1px 1px 4px #0007'}} >
-                  <View style={{position:'absolute', height:'100%', width:'14.8%',maxWidth:80, left:0,borderRightWidth:.8,borderColor:'#111',alignItems:'center', justifyContent:'center'}} >
-                   <Icon style={{}} name={'image'} size={22} color={"#666"} />
-                   </View>
-                   <Text style={{width:'85%',marginTop:15,paddingHorizontal:8, color:'#666'}} >{imageUrl?.name?imageUrl.name:'انتخواب عکس از گالری'}</Text>
-                    <input
-                    type={'file'}
-                    accept="image/*"
-                    // accept="audio/*,video/*,image/*"
-                    placeholder=" انتخاب از گالری "
-                    onChange={(event)=>{setImageUrl(event.target.files[0])}}
-                    style={{opacity:0, width:'100%',height:'100%'}}
-                    />
-                    </View>
-                  </Animated.View>
-                  {_imageUrl && !img && <Text style={[styles.textinput, { color: 'red' }]} >
-                    {newObj.imageUrl}
-                  </Text>}
-                </Swiper>
-              </Animated.View>
-            </View>
-          }
-
-
-
-
-
-
-          {i &&
-            <KeyboardAvoidingView behavior={"height"} style={{ flex: 1 }}>
-              <Animated.View style={[styles.viewInput, { minHeight: 90 }, { marginBottom: 5 }]} >
-                <Swiper cansel={(iIconLeft || iIconRight) ? false : true} style={{ height: '100%', marginBottom: 20, paddingBottom: 20 }}
-                  styleRightIcon={{ top: 37 }}
-                  styleLeftIcon={{ top: 37 }}
-                  iconLeft={iIconLeft}
-                  iconRight={iIconRight}
-                >
-                  <Text style={[styles.textinput, { marginTop: 5 }]} >توضیحات</Text>
-                  <Animated.View style={[styles.animatedBorder,
-                  _info && !inf &&
-                  {
-                    borderWidth: 1.2, borderColor: iterPlt8
-                    , transform: [{ translateX: fadeAnim8 }]
-                  }]} >
-                    <Input
-                      icon={'info'}
-                      value={info}
-                      onChangeText={(text) => setInfo(text)}
-                      p=" توضیحات "
-                      onBlur={() => { set_Info(true); !inf && fadeOut8() }}
-                      style={styles.input}
-                    />
-                  </Animated.View>
-                  {_info && !inf && <Text style={[styles.textinput, { color: 'red' }]} >
-                    {newObj.info}
-                  </Text>}
-                </Swiper>
-              </Animated.View>
-            </KeyboardAvoidingView>
-          }
-
-
-
-          {m &&
-            <KeyboardAvoidingView behavior={"height"} style={{ flex: 1, marginBottom: 20 }}>
-              <View style={[styles.viewInput, { flexGrow: 3, height:120,minHeight: 120, marginBottom: 20, marginTop: 1 }]} >
-                <Text style={[styles.textinput, { marginTop: 0 }]}>پیام</Text>
-                <View style={[{ height: '80.7%', marginBottom: 5 },
-                _message && !msg && { borderWidth: 1.2, borderColor: '#f22', borderRadius: 5 }]} >
-                  <Input 
-                    autoFocus={mAutoFocus}
-                    multiline
-                    value={message}
-                    onChangeText={(text) => setmessage(text)}
-                    p="پیام"
-                    onBlur={() => set_Message(true)}
-                    style={[styles.input, { height: 100}]}
-                    textStyle={{maxWidth:'100%', width:'100%'}}
-                  />
-                </View>
-                {_message && !msg && <Text style={[styles.textinput, { color: 'red' }]} >
-                  {newObj.message}
-                </Text>}
-              </View>
-            </KeyboardAvoidingView>
-          }
-
-
-
-
-          {
-            _input &&
-            <KeyboardAvoidingView behavior={"height"} style={{ flex: 1 }}>
+          {_input &&
+            <KeyboardAvoidingView behavior={"height"} style={{  height:70,minHeight:70, marginVertical:10 }}>
               <View style={[styles.viewInput, { minHeight: 90 }, { marginBottom: 5 }]} >
                 <Input
                   textContentType="telephoneNumber"
@@ -847,14 +313,8 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
 
           }
 
-
-
-
-
-
-        {
-            $code &&
-            <KeyboardAvoidingView behavior={"height"} style={{ flex: 1 }}>
+         {$code &&
+            <KeyboardAvoidingView behavior={"height"} style={{  height:70,minHeight:70, marginVertical:10 }}>
               <View style={[styles.viewInput, { minHeight: 90 }, { marginBottom: 5 }]} >
                 <Input
                   mc_icon="cellphone-message"
@@ -869,28 +329,33 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
             </KeyboardAvoidingView>
           }
 
-
-
-
-
+         {im && <InputImage
+            imIconLeft={imIconLeft} 
+            imIconRight={imIconRight} 
+            imageUrl={imageUrl} 
+            setImageUrl={setImageUrl}
+            _imageUrl={_imageUrl} 
+            newObj={newObj.imageUrl} 
+            img={img}
+            styles={styles}
+         />}
 
           {ch &&
             <View behavior={"height"} style={{ flex: .5, justifyContent: 'center' }}>
               <View style={{ marginVertical: 10 }} >
                 <View style={[styles.viewCheckbox, { flexGrow: .4, maxHeight: 20 }]}>
                   <CheckBox show={!checkText?show:changeremember} setshow={!checkText?setshow:setchangeremember} />
-                  <Text onPress={(e) => console.log(e.nativeEvent.text)} style={{ marginHorizontal: 11 }} >{checkText ? checkText : "موافقت با قوانین"}</Text>
+                  <Text onPress={(e) => console.log(e.nativeEvent.text)} style={{ marginLeft: 11 }} >{checkText ? checkText : "موافقت با قوانین"}</Text>
                 </View>
                 {_checkbox && show == false && <Text style={{ color: 'red', alignSelf: 'flex-start' }} >پرکردن فیلد الزامی هست</Text>}
               </View>
             </View>
           }
 
-
           {c &&
             <>
               <KeyboardAvoidingView behavior={"height"} style={{ flex: 1 }}>
-                <View style={[styles.viewCaptcha]}>
+                <View style={[styles.viewCaptcha, { flexGrow: .5 }]}>
 
                   <View style={styles.containImageCaptcha}>
                     <Image source={{ uri: `${host}/captcha.png/${rand}` }} style={styles.imageCaptcha} />
@@ -899,12 +364,11 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
                     style={styles.iconCaptcha}
                     onPressIn={() => setchangeRand(true)}
                     onPress={() => {
-                      setchangeRand(true)
                       setShow2(!show2)
-                      refInput.current && refInput.current.setNativeProps({ text: '' })
+                      this.refInput && this.refInput.setNativeProps({ text: '' })
                     }} />
                   <TextInput
-                    ref={refInput}
+                    ref={(e) => { this.refInput = e }}
                     keyboardType="numeric"
                     placeholder="کد امنیتی" style={[styles.TextInput, { borderColor: '#666' }, rand != captcha && _captcha && { borderColor: '#a22' }]}
                     onChangeText={text => setcaptcha(text)} />
@@ -921,11 +385,8 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
             </>
           }
 
-
-
-
           {children &&
-            <View behavior={"height"} style={{ flex: 1 }}>
+            <View behavior={"height"} style={{  height:70,minHeight:70, marginVertical:5 }}>
 
               <View style={[styles.viewChildren, { flexGrow: .4 }]}>
                 <Text onPress={(e) => console.log(e.nativeEvent.text)}
@@ -934,11 +395,8 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
             </View>
           }
 
-
-
-
           {s &&
-            <View behavior={"height"} style={{ flex: 1 }}>
+            <View behavior={"height"} style={{  height:70,minHeight:70, marginVertical:7 }}>
               <View style={{ minHeight: 42, maxHeight: 45, flexGrow: 1, alignSelf: 'center', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5, marginTop: 20 }}>
                 <View style={{ flexGrow: .5, minHeight: 40, flexDirection: 'row-reverse', alignItems: 'center' }} >
 
@@ -1002,11 +460,7 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
                     </Pressable>
                   }
 
-
-
-
                 </View>
-
 
                 {_allstar && newObj.allstar != allstar &&
                   <View style={{ width: '100%', alignItems: 'center', height: 'auto', marginTop: 5 }} >
@@ -1015,25 +469,12 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
                     </Text>
                   </View>
                 }
-
-
-
+                
               </View>
-
-
             </View>
           }
 
-
-
-
-
-
-
-
-
-          <KeyboardAvoidingView behavior={"height"} style={{ flex: 1 }}>
-
+       <KeyboardAvoidingView behavior={"height"} style={{  height:70,minHeight:70, marginBottom:15 }}>
           {btn &&  <Button
               onPressIn={() => {
                 setremember(changeremember ? (60000 * 60 * 24 * 365) : ('24h'))
@@ -1049,9 +490,7 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
                 set_ImageUrl(true)
                 set_Info(true)
                 set_Allstar(true)
-                set_googleCaptcha(true)
                 set_Phone(true)
-                
               }}
               onPress={()=>{
               if (flm && eml && psd && cfpsd && msg && cap && show && titl && prc && img && inf && pon && star1) {
@@ -1061,31 +500,28 @@ const Form = ({ btn=true,contentContainerStyle,overflow,mAutoFocus,mt,bgcolor='#
                 refInput.current && refInput.current.setNativeProps({text: '' })
                 setcaptcha(true)
                 }, 1500) 
-                
               }
                 else {
                 setRand(parseInt(Math.random() * 9000 + 1000))
                 refInput.current && refInput.current.setNativeProps({text: '' })
-              }
-                  
+              }      
           }}
-
             style={[styles.btn]} >
             click
           </Button>}
         </KeyboardAvoidingView>
-
-
-
       </View>
     </View>
-    </ScrollView >
+  </ScrollView >
   )
-
 }
 
 export default Form
 const styles = StyleSheet.create({
+  containerScrollView: {
+    height: '100%',
+    minWidth: '100%',
+  },
   closeRecaptcha: {
     fontSize: 31,
     elevation: 1,
@@ -1206,12 +642,11 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     padding: 7,
     width: 85,
-    height: 33,
+    height: 31,
     borderWidth: 1,
     backgroundColor: '#eee'
   },
   containImageCaptcha: {
-    height:33,
     elevation: 2,
     shadowColor: "#000",
     shadowOpacity: .5,
@@ -1241,18 +676,24 @@ const styles = StyleSheet.create({
   },
   viewCaptcha: {
 
+    flexGrow: 1,
     flexDirection: "row",
     alignSelf: 'flex-start',
-    alignItems: 'center',
+    alignContent: 'center',
     justifyContent: "space-between",
-    width: 260,
+    width: 250,
+    minHeight: 40,
+    maxHeight: 45,
     marginTop: 25,
     marginBottom: 10,
     elevation: 2,
     shadowColor: "#000b",
     shadowOpacity: .6,
     shadowRadius: 3,
-
+    shadowOffset: {
+      width: 2,
+      height: 2
+    }
 
   },
   viewCheckbox: {

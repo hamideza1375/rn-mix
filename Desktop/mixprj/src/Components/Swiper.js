@@ -91,7 +91,7 @@ const App = (props) => {
           }
           }}
           // onStartShouldSetResponder={()=>{}}
-          style={[ { transform: [{ translateX: pan }] }, { minWidth: '100%'  },props.style ]}>
+          style={[ { transform: [{ translateX: pan }] }, { minWidth:'100%', minHeight:50}, props.style]}>
           {props.children}
 
         </Animated.View>

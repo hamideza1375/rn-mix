@@ -1,15 +1,37 @@
-let notification
-export const create = (title = '', body = '', icon = '', click) => {
-  // if (!("Notification" in window)) { alert(title); }
-  // else if (Notification.permission === "denied") { alert(title); }
-  // else if (Notification.permission === "granted") {
-    Notification.requestPermission().then((permission) => {
-      if (permission === "granted") {
-        notification = new Notification(title, { body, icon });
-        click && notification.addEventListener('click', click)
-      }
-    });
-  }
-// }
+import notifee, { AndroidStyle } from '@notifee/react-native';
 
-export const close = () => { notification && notification.close() }
+let id = ''
+
+export const create = async (title, body, icon,notificationId) => {
+  const channelId = await notifee.createChannel({ id: 'default', name: 'Default Channel', });
+  await notifee.requestPermission();
+  
+  id = Math.random().toString()
+  const notification = notifee.displayNotification({
+    id:notificationId?notificationId:id,
+    title: title,
+    body: body,
+    android: icon ? {
+      channelId,
+      // asForegroundService:true,
+      largeIcon: icon,
+      style: { type: AndroidStyle.BIGPICTURE, picture: icon },
+    } :
+      { channelId },
+    ios: icon ? {
+      categoryId: "reminder",
+      attachments: [{ url: icon }]
+    } :
+      {
+        // categoryId: "new-episode",
+        categoryId: "reminder",
+
+      },
+  });
+  return notification;
+}
+
+
+export const close = async (notificationId) => {
+  await notifee.cancelNotification(notificationId?notificationId:id);
+}

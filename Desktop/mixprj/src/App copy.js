@@ -26,8 +26,7 @@ import AddAdmin from "./screens/admin/AddAdmin";
 import DeleteAdmin from "./screens/admin/DeleteAdmin";
 import Notifee from './screens/admin/Notifee';
 import ChangeAdmin from "./screens/admin/ChangeAdmin";
-import { Div, Input, Row } from "./Components/Html";
-import { Init } from "./Components/Html";
+import { Div, H, Input, RowSpan } from "./Components/Html";
 import Home from "./screens/food/Home"
 import { Layout } from "./_other/Layout";
 import _404 from "./_other/404"
@@ -87,7 +86,7 @@ const Food = () => {
       <Image source={require('./assets/images/logo.jpg')} style={[{ margin: 'auto', borderRadius: 5 }, imageStyle]} />
       :
       <contextStates.Provider value={p}>
-        <Init ref={(e)=>allState.set$(e)} id={'s'} />
+        <H ref={(e)=>allState.set$(e)} id={'s'} />
         <ToastProvider {...p} />
         <Tab.Navigator screenOptions={{ headerLeft: () => <Icon style={{ fontSize: 28, paddingRight: 15, color: '#777' }} name='home' onPress={() => navigation.navigate('Home')} />, headerTitleAlign: 'center', headerTitleStyle: { color: 'transparent' } }} >
 
@@ -115,7 +114,7 @@ const Food = () => {
 
           <Tab.Group screenOptions={{ headerLeft:()=><></>}}>
             <Tab.Screen name="AdminTitleAllFood" options={{ title: 'پنل ادمین' , headerShown:false}} children={(props) => <Layout {...props}  {...p} ><AdminTitleAllFood {...props} {...p} {...reducer(props)} /></Layout>} />
-            <Tab.Screen name="AdminChildTable" options={({ route }) => ({ title: route.params.title, header: (props) =><View bgcolor='#fff' style={{shadowRadius:7, shadowOpacity:.2}} mb={5} children={<Input alignSelf='center' mt={5} mb={2} w='97%' placeholderColor='red' iconColor='#777' border={[1, '#aaa']} icon='search' value={p.textSearch} onChangeText={(text) => { _food(props).sercher(text); p.settextSearch(text) }} placeholder="جستجو" />} /> })} children={(props) => <Layout {...props}  {...p} ><AdminChildTable {...props} {...p} {...reducer(props)} /></Layout>} />
+            <Tab.Screen name="AdminChildTable" options={({ route }) => ({ title: route.params.title, header: (props) =><Div bgcolor='#fff' style={{shadowRadius:7, shadowOpacity:.2}} mb={5} > <Input alignSelf='center' mt={5} mb={2} w='97%' placeholderColor='red' iconColor='#777' border={[1, '#aaa']} icon='search' value={p.textSearch} onChangeText={(text) => { _food(props).sercher(text); p.settextSearch(text) }} placeholder="جستجو" /></Div> })} children={(props) => <Layout {...props}  {...p} ><AdminChildTable {...props} {...p} {...reducer(props)} /></Layout>} />
             <Tab.Screen name="EditTitleAllFood" options={({ route }) => ({ title: route.params.title })} children={(props) => <Layout {...props}  {...p} ><EditTitleAllFood {...props} {...p} {...reducer(props)} /></Layout>} />
             <Tab.Screen name="EditChildFood" options={({ route }) => ({ title: route.params.title })} children={(props) => <Layout {...props}  {...p} ><EditChildFood {...props} {...p} {...reducer(props)} /></Layout>} />
             <Tab.Screen name="CreateTitleAllFood" options={({ route }) => ({ title: 'ساخت دسته ی اغذیه' })} children={(props) => <Layout {...props}  {...p} ><CreateTitleAllFood {...props} {...p} {...reducer(props)} /></Layout>} />
@@ -125,7 +124,7 @@ const Food = () => {
             <Tab.Screen name="ChangeAdmin" options={{ title: 'تعویض ادمین' }} children={(props) => <Layout {...props}  {...p} ><ChangeAdmin {...props} {...p} {...reducer(props)} /></Layout>} />
             <Tab.Screen name="Address" options={{ title: 'آدرس' }} children={(props) => <Layout {...props}  {...p} ><Address {...props} {...p} {...reducer(props)} /></Layout>} />
             <Tab.Screen name="DeleteAdmin" options={{ title: 'حذف ادمین' }} children={(props) => <Layout {...props}  {...p} ><DeleteAdmin {...props} {...p} {...reducer(props)} /></Layout>} />
-            <Tab.Screen name="DeleteAllAddress" options={{ title: 'حذف آدرس ها', headerShown: true, header: (props) => <Row flexDirection={'row-reverse'} ><Input border={[1, '#888']} h={42} m={'auto'} mv={10} w={'90%'} alignSelf='center' value={p.textSearch} onChangeText={(text) => { p.settextSearch(text); const fd = p._address.filter(f => f.fullname.includes(text) || f.phone == text); p.setallAddress(fd) }} p="جستجو" icon={'search'} /></Row> }} children={(props) => <Layout {...props}  {...p} ><DeleteAllAddress {...props} {...p} {...reducer(props)} /></Layout>} />
+            <Tab.Screen name="DeleteAllAddress" options={{ title: 'حذف آدرس ها', headerShown: true, header: (props) => <RowSpan flexDirection={'row-reverse'} ><Input border={[1, '#888']} h={42} m={'auto'} mv={10} w={'90%'} alignSelf='center' value={p.textSearch} onChangeText={(text) => { p.settextSearch(text); const fd = p._address.filter(f => f.fullname.includes(text) || f.phone == text); p.setallAddress(fd) }} p="جستجو" icon={'search'} /></RowSpan> }} children={(props) => <Layout {...props}  {...p} ><DeleteAllAddress {...props} {...p} {...reducer(props)} /></Layout>} />
           </Tab.Group>
 
           <Tab.Screen name="Location" options={{ title: 'نقشه', headerShown: false }} children={(props) => <Layout {...props}  {...p} ><Location {...props} {...p} {...reducer(props)} /></Layout>} />

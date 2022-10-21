@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Pressable } from 'react-native';
+import { View, Text, Image, Pressable, Platform } from 'react-native';
 
 function Card(prop) {
 
@@ -201,7 +201,8 @@ function Card(prop) {
               {header &&
                 <View style={[{
                   paddingHorizontal: 5, paddingVertical: 12, width: '70%'
-                }, dr === 'rtl' ? { alignSelf: 'flex-start', } : { alignSelf: 'flex-end' }]}>
+              //  !
+            }, dr === 'rtl' ? { alignSelf:Platform.OS !== 'web'?'flex-start': 'flex-end' } : { alignSelf:Platform.OS !== 'web'?'flex-end': 'flex-start' }]}               >
                   <Text
                     style={[{
                       color:
@@ -232,7 +233,9 @@ function Card(prop) {
               {headerRow &&
                 <View style={[{
                   paddingHorizontal: 5, paddingVertical: 12, width: '70%'
-                }, dr === 'rtl' ? { alignSelf: 'flex-start', } : { alignSelf: 'flex-end' }]}>
+              //  !
+              
+              }, dr === 'rtl' ? { alignSelf:'flex-end' } : { alignSelf:'flex-start' }]}>
                   <View
                     style={[{
                       color:
@@ -264,7 +267,7 @@ function Card(prop) {
                 position: 'absolute',
                 height: 90,
                 justifyContent: 'center',
-              }, dr === 'rtl' ? { left: 5 } : { right: 5 }]} >
+              }, dr === 'ltr' ? { left: 5 } : { right: 5 }]} >
                 <Image source={img} style={[{
                   width: 70,
                   height: 70,
@@ -281,7 +284,9 @@ function Card(prop) {
               {body &&
                 <View style={[{
                   paddingHorizontal: 5, paddingVertical: 12, width: '79.4%'
-                }, dr === 'rtl' ? { alignSelf: 'flex-start', } : { alignSelf: 'flex-end' }]}>
+              //  !
+            }, dr === 'rtl' ? { alignSelf:'flex-end' } : { alignSelf:'flex-start' }]}
+                           >
                   <Text style={[{
                     color:
                       !color ?
@@ -344,7 +349,8 @@ function Card(prop) {
                 {header &&
                   <View style={[{
                     paddingHorizontal: 5, paddingVertical: 12, width: '70%'
-                  }, dr === 'rtl' ? { alignSelf: 'flex-start', } : { alignSelf: 'flex-end' }]}>
+                  }, dr === 'rtl' ? { alignSelf: 'flex-end' } : { alignSelf: 'flex-start' }]}
+                  >
                     <Text
                       style={[{
                         color:
@@ -363,7 +369,8 @@ function Card(prop) {
                 {headerRow &&
                   <View style={[{
                     paddingHorizontal: 5, paddingVertical: 12, width: '70%'
-                  }, dr === 'rtl' ? { alignSelf: 'flex-start', } : { alignSelf: 'flex-end' }]}>
+                  }, dr === 'rtl' ? { alignSelf: 'flex-end' } : { alignSelf: 'flex-start' }]}
+                  >
                     <View
                       style={[{
                         color:
@@ -385,7 +392,7 @@ function Card(prop) {
                   position: 'absolute',
                   height: 90,
                   justifyContent: 'center',
-                }, dr === 'rtl' ? { left: 5 } : { right: 5 }]} >
+                }, dr === 'ltr' ? { left: 5 } : { right: 5 }]} >
                   <Image source={img} style={[{
                     width: 70,
                     height: 70,
@@ -401,7 +408,8 @@ function Card(prop) {
                 {body &&
                   <View style={[{
                     paddingHorizontal: 5, paddingVertical: 12, width: '79.4%'
-                  }, dr === 'rtl' ? { alignSelf: 'flex-start', } : { alignSelf: 'flex-end' }]}>
+                  }, dr === 'rtl' ? { alignSelf: 'flex-end' } : { alignSelf: 'flex-start' }]}
+                  >
                     <Text style={[{
                       color:
                         !color ? 'black' : color,

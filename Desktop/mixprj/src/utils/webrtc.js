@@ -1,14 +1,38 @@
-import React, { forwardRef } from "react"
-window.RTCPeerConnection.prototype.addStream = function addStream(stream) {stream.getTracks().forEach((track) => this.addTrack(track, stream)) };
-const mediaDevices = navigator.mediaDevices
-const RTCPeerConnection = window.RTCPeerConnection
-const RTCSessionDescription = window.RTCSessionDescription
-const RTCIceCandidate = window.RTCIceCandidate
-const RTCView = forwardRef((props, ref) => <video autoPlay ref={(e) => { if (e) e.srcObject = props.streamURL }}  {...props} />)
+import React, { useEffect } from 'react';
+import { PermissionsAndroid, Platform } from 'react-native';
+import { RTCView as _RTCView, RTCSessionDescription, RTCPeerConnection, RTCIceCandidate, mediaDevices } from 'react-native-webrtc';
+
+
+
+
+
+const RTCView = (props) => {
+
+
+  useEffect(() => {
+
+    if (Platform.OS === 'android') {
+      const permission = PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        {
+          title: '',
+          message: '',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK'
+        }
+      ).then(()=>{})
+      }
+  }, [])
+
+
+  return <_RTCView objectFit={props.objectFit} {...props} streamURL={props.streamURL.toURL()} />
+}
 export {
-    mediaDevices,
-    RTCPeerConnection,
-    RTCSessionDescription,
-    RTCIceCandidate,
-    RTCView
+  RTCView,
+  RTCSessionDescription,
+  RTCPeerConnection,
+  RTCIceCandidate,
+  mediaDevices,
 }

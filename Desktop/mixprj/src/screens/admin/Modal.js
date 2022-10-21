@@ -1,8 +1,8 @@
 import React from 'react'
 import Modal from '../../Components/Modal';
 import Card from '../../Components/Card';
-import { View } from 'react-native';
-import { Button } from '../../Components/Html';
+import { Text, View } from 'react-native';
+import { Button, Hr, P } from '../../Components/Html';
 
 const _Modal = (p) => {
 
@@ -15,19 +15,16 @@ const _Modal = (p) => {
 
   return (
     <View style={{ height: 0 }} >
-      <Modal style={{ width: 333, height: 200, backgroundColor: '#eee' }}
+      <Modal style={{ width: 285, height: 200, backgroundColor: '#eee' }}
         setshow={p.setshowModal} show={p.showModal}>
         <View>
-          <Card bgcolor='#f8a2' color='#a489' header={p.message}
-            style={{
-              width: 280, justifyContent: 'center', alignItems: 'center',
-              marginTop: 10
-            }} />
+          <P mt={12} w={280} ta={'center'} p={7} br={4} children={p.message}/>
         </View>
-        <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'space-evenly', width: '100%' }}>
-          <Button color='#fff' bgcolor='#9ad' onPress={handle}
-            style={{ fontSize: 14, width: 78, marginVertical: 11 }}>بله</Button>
-          <Button color='#fff' bgcolor='#d7a' onPress={() => { p.availabe && p.availabe(true); p.setshowModal(!p.showModal) }} style={{ fontSize: 14, width: 78, marginVertical: 11 }}>خیر</Button>
+        <Hr w={220} btc='#333' />
+        <View style={{ marginTop: 40, flexDirection: 'row', justifyContent: 'space-evenly', width: '100%' }}>
+          <Button color='#fff' bgcolor='#5ae' onPress={handle}
+            style={{ fontSize: 12, width: 78, marginVertical: 11, height:50 }}>{p.availabe?'موجود نیست':'بله'}</Button>
+          <Button color='#fff' bgcolor={p.availabe?'#aa4':'#f44'} onPress={() => { p.availabe && p.availabe(true); p.setshowModal(!p.showModal) }} style={{ height:50, fontSize: 14, width: 78, marginVertical: 11 }}>{p.availabe?'موجود هست':'خیر'}</Button>
         </View>
       </Modal >
     </View>

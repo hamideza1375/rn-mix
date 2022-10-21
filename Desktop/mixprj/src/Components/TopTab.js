@@ -11,7 +11,7 @@ const Drawer = ({ group, children, name, style, bgcolor = '#fff', color = "#777"
         {group.map((item, key) => (
           <View key={key} style={styles.routeView} >
             <Pressable
-              onPressIn={() => navigation.navigate(item.name)}
+              onPress={() => navigation.navigate(item.name)}
               style={[styles.pressableActive, { borderBottomColor: name === item.name ? "#47f" : "#f5f5f5", borderBottomWidth: name === item.name ? 2 : 0 }]} >
               <Text style={[styles.textActive,
               { color: name === item.name ? activeColor : color }]}>{item.title}</Text>

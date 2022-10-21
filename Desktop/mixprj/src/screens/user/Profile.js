@@ -17,14 +17,14 @@ const Profile = (p) => {
               <Span class={s.containImage}>
                 <input accept='image/*' className={s.inputFile} type='file' onChange={(event) => { imgPicker(event.target.files[0]) }}/>
                 {p.imageProfile ?
-                  <Img src={{ uri: `${p.localhost}/upload/profile/${p.imageProfile}` }} class={s.profileImage} />
+                  <Img src={{ uri: `${p.localhost}/upload/profile/${p.imageProfile}` }} class={s.profileImage} containClass={s.profileImage} />
                   :
                   <Span>
-                    <P p={0} class={s.iconPlusImage} >➕ </P>
-                    <Img src={require("../../assets/images/user.jpg")} class={s.profileImage} />
+                    <P class={s.iconPlusImage} >➕ </P>
+                    <Img src={require("../../assets/images/user.jpg")} class={s.profileImage} containClass={s.profileImage} />
                   </Span>
                 }
-                <Span>
+                <Span style={{marginLeft:'auto',marginRight:9, top:2}} >
                   <P p={0} class={s.textUserImage}>{p.tokenValue?.fullname}</P>
                 </Span>
               </Span>
@@ -41,17 +41,17 @@ const Profile = (p) => {
               <Span class={s.bodyProfile} >
               <Press onClick={() =>  alert('room8')} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
                   <B_icon icon='comment' size={.6} bgcolor='#444' border='#333' />
-                  <P p={0} fontSize={17} >انتقادات و پیشنهادات</P>
+                  <P p={0} fontSize={27} >انتقادات و پیشنهادات</P>
                 </Press>
                 <Press onClick={() => submit('room7')} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
                   <B_icon icon='comment' size={.6} bgcolor='#444' border='#333' />
-                  <P p={0} style={{ fontSize: 17 }} >ارتباط با ادمین </P>
+                  <P p={0} >ارتباط با ادمین </P>
                 </Press>
                 <Press style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
                   <B_icon icon='comment' size={.6} bgcolor='#444' border='#333' />
-                  <P p={0} /* onPress={() => submit('room7')} */ style={{ fontSize: 17 }} >گفتگو</P>
+                  <P p={0} /* onPress={() => submit('room7')} */ >گفتگو</P>
                 </Press>  
-                {p.tokenValue.isAdmin === 'chief' ? <Button bgcolor='#555' class={[s.btnPanel]} onPress={() => p.navigation.navigate("AdminTitleAllFood")} >پنل ادمین</Button> : <P p={0} />}
+                {p.tokenValue.isAdmin === 'chief' ? <Button bgcolor='#555' class={[s.btnPanel]} onClick={() => p.navigation.navigate("AdminTitleAllFood")} >پنل ادمین</Button> : <P p={0} />}
               </Span>
             </_scrollView>
         </Span>

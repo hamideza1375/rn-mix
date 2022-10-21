@@ -1,3 +1,5 @@
+import Axios from "axios"
+
 let loginInterval = null
 
 export function userState(p) {
@@ -32,6 +34,7 @@ export function userState(p) {
       const user = p.jwt_decode(data.token)
       p.settokenValue(user)
       p.settimeChange(5)
+      Axios.defaults.headers.common["Authorization"] = token
       p.setchangeLoginUser(!p.changeLoginUser)
       // send
 
@@ -144,15 +147,15 @@ export function userState(p) {
       }, [])
     )
 
-    p.useFocusEffect(
-      p.useCallback(() => {
-        (async () => {
-          await p.getProfile().then(({ data }) => {
-            data?.uri && p.setimageProfile(data.uri)
-          })
-        })()
-      }, [p.change])
-    )
+    // p.useFocusEffect(
+    //   p.useCallback(() => {
+    //     (async () => {
+    //       await p.getProfile().then(({ data }) => {
+    //         data?.uri && p.setimageProfile(data.uri)
+    //       })
+    //     })()
+    //   }, [p.change])
+    // )
 
     p.useMemo(() => {
       try {

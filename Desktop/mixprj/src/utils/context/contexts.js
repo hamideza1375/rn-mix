@@ -9,7 +9,7 @@ import moment from "moment-jalaali";
 
 import { useCallback, useEffect, useMemo } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { Keyboard, BackHandler, ToastAndroid, Platform, Dimensions, Animated } from "react-native";
+import { Keyboard, BackHandler, ToastAndroid, Platform, Dimensions, Animated, Text } from "react-native";
 
 import { verifycodeRegister, sendcode, verifycode, loginUser, registerUser, forgetpassword, resetpassword } from "../../services/userService"
 import { geocode, reverse, sendProfile, getSingleTitleFoods,editcomment, deletecomment, getallchildfood, getfoods, getcommentchildfood, createcommentchildfood, getsinglechildfood, getcommentsinglefood, payment, getProfile, notification } from '../../services/foodService'
@@ -149,10 +149,14 @@ function State() {
   const [anim] = useState(new Animated.Value(0))
   const [animScale] = useState(new Animated.Value(1))
   const [_list, set_list] = useState([])
+  const [changeTitle, setchangeTitle] = useState(false)
 
+  const [$, set$] = useState()
 
 
   return {
+    changeTitle, setchangeTitle,
+    $, set$,
     verifycodeRegister, sendcode, verifycode, loginUser, registerUser, forgetpassword, resetpassword,
     geocode, reverse, sendProfile, getSingleTitleFoods,editcomment, deletecomment, getallchildfood, getfoods, getcommentchildfood, createcommentchildfood, getsinglechildfood, getcommentsinglefood, payment, getProfile, notification,
     getAllAddress, deleteAddress, deleteAllAddress, useradmin, deleteAdmin, getAlluserAdmin, changeAdmin, createfood, editfood, deletefood, createchildfood, editchildfood, deletechildfood, createNotification, unAvailable, listAvailable,

@@ -184,7 +184,7 @@ export function adminState(p) {
   // createpartfood
   this.createFoodAction = async () => {
     await p.createfood({ title: p.title, imageUrl: p.imageUrl })
-    p.setchangeFood(!p.changeFood)
+    p.setchangeTitle(!p.changeTitle)
     p.settitle('')
     p.setImageUrl('')
     p.navigation.goBack()
@@ -203,7 +203,7 @@ export function adminState(p) {
   // DeleteFood
   this.deleteFoodAction = async (id) => {
     await p.deletefood(id)
-    p.setchangeFood(!p.changeFood)
+    p.setchangeTitle(!p.changeTitle)
   }
   // DeleteFoods
 
@@ -233,6 +233,7 @@ export function adminState(p) {
 
   this.editeFoods = async () => {
     await p.editfood(p.route.params.id, { title: p.title, imageUrl: p.imageUrl })
+    p.setchangeTitle(!p.changeTitle)
     p.navigation.goBack()
   }
   //EditeFoods

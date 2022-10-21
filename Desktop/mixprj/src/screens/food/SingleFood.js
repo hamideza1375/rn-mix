@@ -14,7 +14,6 @@ const SingleFood = (p) => {
 
   p._food.getsinglefood()
   p._food.getCommentSingle()
-  p._food.getImageProfile()
   p._food.findCmment()
   p._food.header()
   const editComment = (id) => p._food.pressIconEdit(id)
@@ -39,7 +38,7 @@ const SingleFood = (p) => {
                     >توضیحات: {!p.show ? p.truncate(p.singlefood.info, 9) : p.singlefood.info + ' (کمتر)'}</P>
                   </Span>
                   <Span>
-                    <P class={s.price}>قیمت: {spacePrice(p.singlefood.price)} تومان</P>
+                    <P class={s.price}>قیمت: {spacePrice(p.singlefood.price)} ت</P>
                   </Span>
                 </Span>
               </>
@@ -50,20 +49,16 @@ const SingleFood = (p) => {
       <Span w='100%'>
 
         <Span class={s.btnContainer} >
-
-          {
-            !p.showForm && <Button mt={7} bgcolor='#f82' color="#333" class={s.btnShow} onPress={() => { p.set ? p.setshowForm2(!p.showForm2) : editComment(p.allcomment.find(comment => comment.starId === p.tokenValue.userId)?._id) }}>
+          {!p.showForm && <Button mt={7} bgcolor='#f82' color="#333" class={s.btnShow} onPress={() => { p.set ? p.setshowForm2(!p.showForm2) : editComment(p.allcomment.find(comment => comment.starId === p.tokenValue.userId)?._id) }}>
               {!p.showForm2 ? p.sendMessage ? ' ارسال نظر' : ' ویرایش نظر' : ' بازگشت'}
-            </Button>
-          }
+            </Button>}
           {!p.showForm2 && p.showForm && <Button mt={7} bgcolor='#f82' color="#333" class={s.btnShow} onPress={() => { p.setshowForm(false) }}>
             بازگشت
           </Button>}
-          {
-            p.sendMessage ?
+        
+          {p.sendMessage ?
               <>
-                {p.showForm ?
-                  p.permission || p.tokenValue.isAdmin === 'chief' ?
+                {p.showForm ? p.permission || p.tokenValue.isAdmin === 'chief' ?
                     <Span class={s.containerComment} >
                       <CreateComment {...p} id3={p.sendMessage ? p.id3 : null} />
                     </Span>
@@ -74,18 +69,14 @@ const SingleFood = (p) => {
                     }} >
                       <P color='transparent' >s</P>
                     </Span>
-                  :
-                  <></>}
-              </>
-              :
+                  :<></>}
+              </> :
               <>
                 {p.showForm &&
                   <Span class={s.containerComment} >
                     <EditComment {...p} id={p.route.params.id} id2={p.route.params.id2} id3={p.id3} />
                   </Span>}
-              </>
-
-          }
+              </>}
         </Span>
 
         {
@@ -123,7 +114,7 @@ const SingleFood = (p) => {
                     }
                     body={item.message}
                     img={item.imageUrl === undefined || item.imageUrl === 'undefined' || item.imageUrl === null || item.imageUrl === ''?
-                    require("../../assets/images/user2.jpg")
+                    require("../../assets/images/user.jpg")
                     :
                     { uri: `${p.localhost}/upload/profile/${item.imageUrl}` }}
                     imageStyle={style.imgcard}

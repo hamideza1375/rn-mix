@@ -1,6 +1,6 @@
 import React from 'react'
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { Button, ImgBackground, P, Scroll, Span, Table } from '../../Components/Html';
+import { Button, Container, ImgBackground, P, Scroll, Span, Table } from '../../Components/Html';
 import Loading from '../../Components/Loading'
 import s from "./Food.module.scss"
 
@@ -13,7 +13,7 @@ const FinallFoodPayment = (p) => {
   const deleteAsyncStorage = () => p._food.deleteStorage()
 
   return (
-        <Span class={s.viewHead}>
+        <Container class={s.viewHead}>
           <Span class={s.viewOne}>
             <Span class={s.viewConseal} >
               <Button disabled={allfood.length ? false : true} bgcolor="orange" class={s.btnFinal} onPress={deleteAsyncStorage} >لغو سفارش</Button>
@@ -80,7 +80,7 @@ const FinallFoodPayment = (p) => {
             <Span>
             </Span>
           </Span>
-        </Span >
+        </Container >
   )
 }
 export default FinallFoodPayment

@@ -21,12 +21,14 @@ const AdminTitleAllFood = function (p) {
   p._food.getTitleFood([p.showModal, p.show])
   p._food.setPagination()
   return (
-    <Drawer name={p.route.name} title={'پنل ادمین'} group={drawer} iconRight='home' bgcolor="#fff" style={{ overflow: 'hidden', shadowRadius: 9,shadowOffset: {width:.1,height:.1}, shadowOpacity:.15 }}>
+    <Drawer name={p.route.name} title={'پنل ادمین'} group={drawer} iconRight={{name:'home',onClick:()=>{p.navigation.navigate('Home')}}} bgcolor="#fff" style={{ overflow: 'hidden', shadowRadius: 9,shadowOffset: {width:.1,height:.1}, shadowOpacity:.15 }}>
       <Scroll containClass={s.container}>
+      <Button mt={2} h={40} w='89.8%' onPress={() => p.navigation.navigate("CreateTitleAllFood")}>ساخت دسته ی اغذیه</Button>
+
         <Span class={s.containTable} >
           {
             !p.foods.length ?
-              <Loading style={{ top: 40 }} animating={p.foods.length ? false : true} />
+              <Loading style={{ top: 30 }} animating={p.foods.length ? false : true} />
               :
               <Table
                 color={['#555', '#656565', 'white']}
@@ -42,20 +44,11 @@ const AdminTitleAllFood = function (p) {
                 fontSize={16}
                 object={p.foods}
                 setobject={p.set$food}
-                mt={20}
+                mt={10}
               />
           }
 
-
-          {/* <Button mv={8} onPress={() => p.navigation.navigate("CreateTitleAllFood")}>ساخت دسته ی اغذیه</Button>
-        <Button mv={8} onPress={() => p.navigation.navigate('AddAdmin')}>افزودن به گروه ادمین ها</Button>
-        <Button mv={8} onPress={() => p.navigation.navigate('Notifee')}>ارسال نوتیفیکیشن</Button>
-        <Button mv={8} onPress={() => p.navigation.navigate('ListAvailable')}>لیست غذا های ناموجود</Button>
-        <Button mv={8} onPress={() => p.navigation.navigate("Address")} >address</Button>
-        <Button mv={8} onPress={() => p.navigation.navigate("DeleteAdmin")} >DeleteAdmin</Button>
-        <Button mv={8} onPress={() => p.navigation.navigate("DeleteAllAddress")} >DeleteAllAddress</Button>
-        <Button mv={8} onPress={() => p.navigation.navigate("ChangeAdmin")} >ChangeAdmin</Button> */}
-          <Modal showModal={p.showModal} setshowModal={p.setshowModal} id={p.id} message={'حذف شود؟ ' + " (" + p.foods[p.$food[1]]?.title + ')'} _admin={p._admin} />
+        <Modal showModal={p.showModal} setshowModal={p.setshowModal} id={p.id} message={'حذف شود؟ ' + " (" + p.foods[p.$food[1]]?.title + ')'} _admin={p._admin} />
         </Span>
       </Scroll>
     </Drawer>

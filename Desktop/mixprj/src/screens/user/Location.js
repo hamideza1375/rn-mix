@@ -139,7 +139,7 @@ const Location = (p) => {
 					style={{ width: 200, margin: ' 3px 2px 0 0', display: 'flex', flexDirection: 'row', alignItems: ' flex-end', }}>
 					<input type="text" placeholder="search" id='inputSearch'
 						style={{ textAlign: 'right', borderRadius: '1px', border: '1px solid rgb(150, 146, 146)', display: 'block', flexGrow: 1, height: 25, position: 'relative', zIndex: 1000 }} />
-					<i className="fa fa-search" id='searching' style={{ cursor: 'pointer', borderRadius: 1, padding: '1px 2px 3px', border: '1px solid rgb(150, 146, 146)', backgroundColor: '#fff', fontSize: 18, display: 'block', height: 23.2, width: 20, position: 'relative', zIndex: 1000 }}>🔎</i>
+					<i className="fa fa-search" id='searching' style={{ cursor: 'pointer', borderRadius: 1, paddingBottom: 1,paddingRight:2, border: '1px solid rgb(150, 146, 146)', backgroundColor: '#fff', fontSize: 15, display: 'block', height: 25, width: 24, position: 'relative', zIndex: 1000,boxSizing:'border-box' }}>🔎</i>
 				</form>
 			</div>
 			<button id='btnGetLocation' style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', background: '#fff', padding: '1px 1px 2px', borderRadius: '4px', zIndex: 10000, position: 'absolute', top: 66, left: 9.88, fontSize: 20, height: 30, maxHeight: 30, width: 26.62, maxWidth: 26.62, borderWidth: 0, boxShadow: '.2px 1.5px 4px #333d' }}><p style={{ transform: 'rotate(-65deg)', padding: 0, margin: 0, marginTop: -2 }}>⌲</p></button>

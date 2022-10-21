@@ -6,8 +6,9 @@
 
 .container {
   width: 100%;
-  padding: 0 5px;
+  padding: 0px 5px;
   align-items: center;
+  height:100%;
 }
 
 .thead {
@@ -49,7 +50,7 @@
 .containerChildTable {
   height: calc(100vh - 170px);
   width: 100%;
-  padding: 2 5 10;
+  padding: 2px 5px 10px;
 }
 
 .paginationContainer {

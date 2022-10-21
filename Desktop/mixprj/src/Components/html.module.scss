@@ -1,0 +1,67 @@
+.Container{
+height: 100vh;
+overflow: hidden;
+}
+
+.div{
+padding: 10px 0px;
+}
+
+.row{
+flex-direction: row;
+}
+
+
+.h1{
+    font-size: 30px;
+    font-family: IRANSansWeb_Bold;
+}
+
+.h2{
+    font-size: 27px;
+    font-family: IRANSansWeb_Bold;
+}
+
+.h3{
+    font-size: 24px;
+    font-family: IRANSansWeb_Bold;
+}
+
+.h4{
+    font-size: 21px;
+    font-family: IRANSansWeb_Bold;
+}
+
+.h5{
+    font-size: 18px;
+    font-family: IRANSansWeb_Bold;
+}
+
+.h6{
+    font-size: 15px;
+    font-family: IRANSansWeb_Bold;
+}
+
+.p{
+    // font-family: IRANSansWeb;
+}
+
+.i{
+    // font-family: IRANSansWeb;
+    font-style : italic
+}
+
+.br{
+    width: 100%;
+     margin: 5px 0px;
+}
+
+.hr{
+     width: 100%;
+      margin: 5px 0px;
+      border-top-width: 1px;
+     }
+
+     .p{
+        // font-family: IRANSansWeb;
+     }

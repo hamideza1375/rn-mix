@@ -1,11 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useRef } from 'react'
-import { Dimensions, View, Text, StyleSheet, Animated, Pressable } from 'react-native'
+import { Dimensions, View, Text, StyleSheet, Animated, Pressable, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-const fontFamily = 'IRANSansWeb'
 const width = Dimensions.get('window').width;
 
-const Drawer = ({ color='#222',group, children, name, title, bgcolor = '#fff', style, icon ,headerRight='', iconRight}) => {
+const Drawer = ({ color='#222',group, children, name, title, bgcolor = '#fff', style, icon ,iconRight}) => {
   const fadeAnim = useRef(new Animated.Value(-width * 2)).current;
   const shadowRef=useRef()
   const navigation = useNavigation()
@@ -38,9 +37,9 @@ const Drawer = ({ color='#222',group, children, name, title, bgcolor = '#fff', s
 
 
   return (
-    <View style={[styles.container,{height:'99.7vh',overflow:'hidden'}]} >
+    <View style={[styles.container,{height:Platform.OS !== 'web'?'99.7%':'99.7vh',overflow:'hidden'}]} >
       <View style={[styles.sidebar, { backgroundColor: bgcolor }, style]} >
-        <View style={styles.TextHeader}>{iconRight? <Icon name={iconRight} size={25} color={color} /> : headerRight}</View>
+        <View style={styles.TextHeader}>{iconRight && <Icon name={iconRight.name} onPress={iconRight.onClick} size={25} color={color} /> }</View>
         <Text style={[styles.TextHeader,{color}]}>{title}</Text>
         <Icon onPress={open} name={'bars'} color={color} size={25} style={{padding:2}} />
       </View>
@@ -58,7 +57,7 @@ const Drawer = ({ color='#222',group, children, name, title, bgcolor = '#fff', s
               <Pressable
                 onPress={() => { navigation.navigate(item.name); close() }}
                 style={[styles.viewActive, { backgroundColor: name === item.name? "#ccf9" : "#f5f5f5" }]} >
-                <Text style={[styles.textActive, { color: name === item.name? "#49f" : "#666" }]}
+                <Text style={[styles.textActive, { color: name === item.name? "#49f" : "#444" }]}
                 >{item.title}</Text>
                 { icon && <Icon size={25} name="user" color={color} style={{ color: name === item.name? "#47e" : "#777" }} /> }
               </Pressable>
@@ -76,7 +75,6 @@ const styles = StyleSheet.create({
     color: '#555',
     paddingBottom: 4,
     minWidth: 30,
-    fontFamily
   },
   sidebar: {
     height:'8%',
@@ -100,7 +98,6 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight:4,
     fontWeight:'100',
-    fontFamily
   },
   pressable: {
     opacity:0,

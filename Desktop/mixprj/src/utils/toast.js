@@ -4,57 +4,62 @@ import { Span, P } from "../Components/Html";
 let toastProperties;
 
 export function Toast(p) {
-  this.show = (title, description) => {
+  this.show = (title, description, time = 6000) => {
     toastProperties = {
       id: Math.random(),
       id2: Math.random(),
       title,
       description,
-      backgroundColor: '#555'
+      backgroundColor: '#555',
+      time
     }
     p.set_list(l=>[...l, toastProperties])
   };
 
-  this.success = (title, description) => {
+  this.success = (title, description,time=6000) => {
     toastProperties = {
       id: Math.random(),
       id2: Math.random(),
       title,
       description,
-      backgroundColor: '#5cb85c'
+      backgroundColor: '#5cb85c',
+      time
     }
     p.set_list(l=>[...l, toastProperties])
   };
 
-  this.error = (title, description) => {
+  this.error = (title, description,time=6000) => {
     toastProperties = {
       id: Math.random(),
       id2: Math.random(),
       title,
       description,
-      backgroundColor: '#d9534f'
+      backgroundColor: '#d9534f',
+      time
     }
     p.set_list(l=>[...l, toastProperties])
   };
 
-  this.info = (title, description) => {
+  this.info = (title, description, time=6000) => {
     toastProperties = {
       id: Math.random(),
       id2: Math.random(),
       title,
       description,
-      backgroundColor: '#5bc0de'
+      backgroundColor: '#5bc0de',
+      time
     }
     p.set_list(l=>[...l, toastProperties])
   };
 
-  this.warning = (title, description) => {
+  this.warning = (title, description, time=6000) => {
     toastProperties = {
       id: Math.random(),
       id2: Math.random(),
       title,
       description,
-      backgroundColor: '#f0ad4e'
+      backgroundColor: '#f0ad4e',
+      time
     }
     p.set_list((l)=>[...l, toastProperties])
   };
@@ -82,7 +87,7 @@ const ToastProvider = (p) => {
           p.set_list(list => list.filter((l) => l?.id !== list[i]?.id))
         }
         if (!p._list.length ) clearInterval(interval)
-      }, 6000);
+      }, p._list[i].time);
     }
   }, [p._list])
 

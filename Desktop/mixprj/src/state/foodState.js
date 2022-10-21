@@ -22,9 +22,11 @@ export function foodState(p) {
       (async () => {
         const { data } = await p.getSingleTitleFoods(p.route.params.id)
         p.settitle(data.title)
+        p.setImageUrl(data.imageUrl)
       })()
       return () => {
         p.settitle('')
+        p.setImageUrl('')
       }
     }, [])
   }
@@ -40,15 +42,16 @@ export function foodState(p) {
   }
 
 
-  this.getTitleFood = show => {
-    p.useFocusEffect(p.useCallback(() => {
-      (async () => {
-        let { data } = await p.getfoods()
-        if (data.length !== p.foods)
-          p.setfoods(data)
-      })()
-    }, [show]))
+this.getTitleFood=()=>{
+
+  // p.useEffect(() => {
+  //   (async () => {
+  //     let { data } = await p.getfoods()
+  //     p.setfoods(data)
+  //   })()
+  // }, [[/* p.showModal, p.show */]])
   }
+
 
 
 
@@ -309,18 +312,6 @@ export function foodState(p) {
 
 
 
-  this.getImageProfile = () => {
-    p.useFocusEffect(
-      p.useCallback(() => {
-        (async () => {
-          await p.getProfile().then(({ data }) => {
-            data?.uri && p.setimageProfile(data.uri)
-          })
-        })()
-      }, [p.allcomment])
-    )
-  }
-
 
   this.header = () => {
     p.useEffect(() => {
@@ -515,10 +506,17 @@ export const home = (p) => {
   }, [p.width])
 
 
+    p.useEffect(() => {      
+      (async () => {
+        await p.getProfile().then(({ data }) => {
+          data?.uri && p.setimageProfile(data.uri)
+        })
+      })()
+    }, [p.change])
 
 
   p.useEffect(() => {
-    var toastOK = () => { p.toast.success('موفق آمیز', '✅') }
+    var toastOK = () => { p.toast.success('موفق آمیز', '✅',2000) }
     var toast500 = () => { p.toast.error('خطا', 'مشکلی از سمت سرور پیش آمده') }
     var toast400 = () => { p.toast.error('خطا', 'اصلاح کنید و دوباره امتحان کنید') }
     var toast399 = () => { p.toast.error('خطا', 'کد وارد شده اشتباه هست') }
@@ -549,9 +547,10 @@ export const home = (p) => {
 
 
   p.useMemo(() => {
-    location.pathname === '/VerifyPayment' ?
-      p.setSplash(false)
-      :
+    //!!
+    // location.pathname === '/VerifyPayment' ?
+    //   p.setSplash(false)
+    //   :
       setTimeout(() => {
         p.setSplash(false)
       }, 1000)
@@ -572,10 +571,17 @@ export const home = (p) => {
           p.settokenValue(user)
         }
       })
+    })()
+  }, []))
+
+
+  p.useEffect(() => {      
+    (async () => {
       let { data } = await p.getfoods()
       p.setfoods(data)
     })()
-  }, []))
+  }, [p.changeTitle])
+
 }
 //home
 

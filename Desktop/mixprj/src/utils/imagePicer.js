@@ -1,23 +1,69 @@
-import * as ImagePicker from "expo-image-picker";
+import { PermissionsAndroid, Platform } from "react-native";
+import * as ImagePicker from "react-native-image-picker";
 
 
 export const imagePicker = (mediaType) => new Promise(async (resolve, reject) => {
-  let res = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: mediaType === 'photo' && ImagePicker.MediaTypeOptions.Images || mediaType === 'video' && ImagePicker.MediaTypeOptions.Videos || ImagePicker.MediaTypeOptions.All
-  });
-  if (!res.cancelled) {
-   resolve(res)
+  if (Platform.OS === 'android') {
+    const permission = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      {
+        title: '',
+        message: '',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK'
+      }
+    );
+    if (permission === 'denied') return;
+    if (permission === 'granted') {
+
+      ImagePicker.launchImageLibrary({ mediaType }, (res) => {
+        if (!res.didCancel) { let imageName = (new Date().getTime() + Math.random() * 10000).toString() + '.jpg'; resolve({ name: res.assets[0].fileName, type: res.assets[0].type, uri: res.assets[0].uri }, imageName) }
+        else alert('دوباره امتحان کنید')
+      })
+    }
   }
-  else alert('دوباره امتحان کنید')
+  else {
+    ImagePicker.launchImageLibrary({ mediaType }, (res) => {
+      if (!res.didCancel) { let imageName = (new Date().getTime() + Math.random() * 10000).toString() + '.jpg'; resolve({ name: res.assets[0].fileName, type: res.assets[0].type, uri: res.assets[0].uri }, imageName) }
+      else alert('دوباره امتحان کنید')
+    })
+  }
 })
+
+
+
+
 
 
 export const cameraPicker = (mediaType) => new Promise(async (resolve, reject) => {
-  let res = await ImagePicker.launchCameraAsync({
-    mediaTypes: mediaType === 'photo' && ImagePicker.MediaTypeOptions.Images || mediaType === 'video' && ImagePicker.MediaTypeOptions.Videos || ImagePicker.MediaTypeOptions.All
-  });
-  if (!res.cancelled) {
-   resolve(res)
+  if (Platform.OS === 'android') {
+    const permission = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      {
+        title: '',
+        message: '',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK'
+      }
+    );
+    if (permission === 'denied') return;
+    if (permission === 'granted') {
+
+      ImagePicker.launchCamera({ mediaType }, (res) => {
+        if (!res.didCancel) { let imageName = (new Date().getTime() + Math.random() * 10000).toString() + '.jpg'; resolve({ name: res.assets[0].fileName, type: res.assets[0].type, uri: res.assets[0].uri }, imageName) }
+        else alert('دوباره امتحان کنید')
+      })
+    }
   }
-  else alert('دوباره امتحان کنید')
+  else {
+    ImagePicker.launchCamera({ mediaType }, (res) => {
+      if (!res.didCancel) { let imageName = (new Date().getTime() + Math.random() * 10000).toString() + '.jpg'; resolve({ name: res.assets[0].fileName, type: res.assets[0].type, uri: res.assets[0].uri }, imageName) }
+      else alert('دوباره امتحان کنید')
+    })
+  }
 })
+

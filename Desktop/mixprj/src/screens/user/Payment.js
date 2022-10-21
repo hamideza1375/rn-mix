@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import Frame from '../../Components/Frame';
+import Frame from '../../Components/other/Frame';
 
 function Payment(p) {
   return (
