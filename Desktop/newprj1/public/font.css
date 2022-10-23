@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'IRANSansWeb_FaNum';
+      src: url('fonts/IRANSansWeb(FaNum).woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+  }
+
+  @font-face {
+    font-family: 'IRANSansWeb';
+    src: url('fonts/IRANSansWeb.ttf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'IRANSansWeb_Light';
+    src: url('fonts/IRANSansWeb_Light.ttf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'IRANSansWeb_Bold';
+    src: url('fonts/IRANSansWeb_Bold.ttf') format('truetype');
+  }
