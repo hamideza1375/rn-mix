@@ -1,8 +1,7 @@
-import GetLocation from "react-native-get-location";
-export const getLocation =(p)=>{
-    p.useEffects(() => {
-        GetLocation.getCurrentPosition({ enableHighAccuracy: true, /* timeout: 15000 */ })
-        .then(location => { p.setregion({ lat: location.latitude, lng: location.longitude, }) })
-        .catch(error => { const { code, message } = error; console.warn(code, message); })
-     }, [])
+import Geolocation from 'react-native-geolocation-service';
+
+export const getLocation = (p) => {
+	p.useMemo(() => {
+		Geolocation.watchPosition(({coords})=>{p.setlocationPermission(true);p.setregion({ lat: coords.latitude, lng: coords.longitude, })});
+	}, [])
 }

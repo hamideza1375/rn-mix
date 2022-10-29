@@ -1,4 +1,5 @@
 import Axios from "axios"
+import Geolocation from 'react-native-geolocation-service';
 import { Platform } from "react-native"
 
 let loginInterval = null
@@ -199,6 +200,32 @@ export function userState(p) {
 
 
   // location
+
+
+  this.getUserLocation = async () => {
+  p.useEffect(() => {
+    (async () => {
+      const _token = await p.localStorage.getItem("token");
+      if (_token) p.setlocationtoken(_token)
+    })()
+
+    if(!p.locationPermission)
+        Geolocation.getCurrentPosition(
+            ({coords}) => {
+              if(!p.locationPermission){
+              p.setregion({ lat: coords.latitude, lng: coords.longitude, })
+              p.setlocationPermission(true)
+              console.log(111);
+          }  },
+            (error) => {
+              console.log(error.code, error.message);
+            },
+            { enableHighAccuracy: p.route.params.origin?false:true, timeout: 15000, maximumAge: 10000 }
+        );
+  }, [])
+  }
+
+
   this.geoCodeAction = async () => {
     let { data } = await p.geocode({ loc: `سبزوار ${p.search1}` })
     let orgin = {

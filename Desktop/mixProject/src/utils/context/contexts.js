@@ -128,7 +128,7 @@ function State() {
   const [oldPrice, setoldPrice] = useState('')
   const [_moment, set_moment] = useState()
   const [splash, setSplash] = useState(true)
-  const [region, setregion] = useState({ latitude: 36.224174234928924, longitude: 57.69491965736432, latitudeDelta: 0.01, longitudeDelta: 0.01 })
+  const [region, setregion] = useState({ lat: 36.224174234928924, lng: 57.69491965736432, latitudeDelta: 0.01, longitudeDelta: 0.01 })
   const [host] = useState(localhost)
   const [input,setinput] = useState('')
   const [showModalAvailabe,setshowModalAvailabe] = useState(false)
@@ -158,6 +158,7 @@ function State() {
   const [lastPayment, setlastPayment] = useState({})
   const [proposalId, setproposalId] = useState([])
   const [changeProposal, setchangeProposal] = useState(false)
+  const [locationPermission, setlocationPermission] = useState(false)
   
   
 
@@ -187,7 +188,7 @@ function State() {
     useMemo,
     moment, jwt_decode, localStorage, Alert, create, close, spacePrice, courseIdValidator,truncate,
     
-    $, set$,
+    $, set$, locationPermission, setlocationPermission,
     anim,animScale,
     _list, set_list,
     locationtoken,setlocationtoken, 

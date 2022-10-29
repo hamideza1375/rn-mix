@@ -1,22 +1,12 @@
 import React from 'react'
 import { View } from 'react-native';
-import GetLocation from 'react-native-get-location';
 import Frame from '../../Components/other/Frame';
 import { localhost } from '../../utils/axios/axios'
 
 
 const Location = (p) => {
 
-  p.useEffects(() => {
-    (async () => {
-      const _token = await p.localStorage.getItem("token");
-      if (_token) p.setlocationtoken(_token)
-    })()
-    
-    GetLocation.getCurrentPosition({ enableHighAccuracy: true, /* timeout: 15000 */ })
-    .then(location => { p.setregion({ lat: location.latitude, lng: location.longitude, }) })
-    .catch(error => { const { code, message } = error; console.warn(code, message); })
-  }, [])
+p._user.getUserLocation()
 
 
   return (
@@ -87,7 +77,7 @@ const Location = (p) => {
       let revers = {}
 
       document.getElementById('btnPayment').style.display = origin && 'none'
-      document.getElementById('btnGetLocation').style.display = origin && 'none'
+      document.getElementById('btnGetLocation').style.display = origin || ${!p.locationPermission} && 'none'
       document.getElementById('btnGetLocation2').style.display = !origin && 'none'
 
       document.getElementById('formSearch').style.display = origin && 'none'
@@ -112,9 +102,9 @@ const Location = (p) => {
         let mark2 = { lat: ${p.region.lat}, lng: ${p.region.lng} }
         var myIcon2 = L.icon({ iconUrl: '${localhost}/images/circle.png', iconSize: [17, 17] });
         let markerOption2 = { draggable: false, icon: myIcon2 }
-        let marker2 = L.marker(mark2, markerOption2).addTo(map)
-        var circle1 = L.circle(mark2, 5).addTo(map);
-        var circle2 = L.circle(mark2, 50).addTo(map);
+        let marker2 = ${p.locationPermission} && L.marker(mark2, markerOption2).addTo(map)
+        var circle1 = ${p.locationPermission} && L.circle(mark2, 5).addTo(map);
+        var circle2 = ${p.locationPermission} && L.circle(mark2, 50).addTo(map);
 
         map.on('click', (ev) => { marker.openPopup() })
         let marker = L.marker(mark, markerOption).addTo(map)
@@ -186,9 +176,6 @@ const Location = (p) => {
         let Mark = { lat: ${p.region.lat}, lng: ${p.region.lng} }
           map.setView(mark);
             marker.setLatLng(mark)
-            // marker2.setLatLng(mark)
-            // circle1.setLatLng(mark)
-            // circle2.setLatLng(mark)
 
             const response = await axios.post('${localhost}/reverse', JSON.stringify(mark),{ headers: { 'Content-Type': 'application/json' } })
             if (response.status) {
@@ -203,7 +190,7 @@ const Location = (p) => {
                 document.getElementById('address').innerHTML = street 
             }}
           }
-
+        
 
           async function setLocation2(){
             let marks2 = { lat: ${p.region.lat}, lng: ${p.region.lng} }

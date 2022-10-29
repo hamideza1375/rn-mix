@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View, ScrollView, Text, Pressable, Platform } from "react-native";
+import { Image, View, ScrollView, Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChildFood from "./screens/food/ChildFood";
 import SingleFood from "./screens/food/SingleFood";
@@ -21,7 +21,7 @@ import EditChildFood from './screens/admin/EditChildFood';
 import CreateTitleAllFood from './screens/admin/CreateTitleAllFood';
 import CreateChildFood from './screens/admin/CreateChildFood';
 import ListAvailable from './screens/admin/ListAvailable';
-import { contextStates, states } from "./utils/context/contexts";
+import { states } from "./utils/context/contexts";
 import Address from "./screens/admin/Address";
 import DeleteAllAddress from "./screens/admin/DeleteAllAddress";
 import AddAdmin from "./screens/admin/AddAdmin";
@@ -44,9 +44,7 @@ import SendProposal from "./screens/user/SendProposal";
 import GetProposal from "./screens/admin/GetProposal";
 rtl()
 
-// console.disableYellowBox = true;
-// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-LogBox.ignoreAllLogs();//Ignore all log notifications
+LogBox.ignoreAllLogs();
 
 const Tab = createNativeStackNavigator()
 const Food = () => {
@@ -78,7 +76,7 @@ const Food = () => {
         <ToastProvider {...p} />
         <Tab.Navigator screenOptions={(props) => { return { headerTitleStyle: { color: 'transparent' }, headerTitleAlign: 'center' ,...icon}}} >
           <Tab.Group screenOptions={{ headerTitleStyle: { color: 'transparent' }, headerTitleAlign: 'center' }} >
-            <Tab.Screen name="Home" options={(props) => ({ title: 'فسفود کاکتوس', headerStyle: { backgroundColor: '#103' }})} children={(props) => <Layout {...props}  {...p} ><Home {...props} {...p}  {...reducer(props)} /></Layout>} />
+            <Tab.Screen name="Home" options={(props) => ({ title: 'فسفود کاکتوس', headerStyle: { backgroundColor: '#103' },headerLeft:()=><></>})} children={(props) => <Layout {...props}  {...p} ><Home {...props} {...p}  {...reducer(props)} /></Layout>} />
             <Tab.Screen name="ChildFood" options={({ route }) => ({ title: route.params.title, headerShown: false })} children={(props) => <Layout {...props} {...p} ><ChildFood {...props} {...p} {...reducer(props)} /></Layout>} />
             <Tab.Screen name="SingleFood" options={({ route }) => ({ title: route.params.title })} children={(props) => <Layout {...props} {...p} ><SingleFood {...props} {...p} {...reducer(props)} /></Layout>} />
           </Tab.Group>
